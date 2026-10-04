@@ -18,7 +18,7 @@
   }
   /* The fancy gold restaurant sign */
   h1 {
-    display: inline-block; margin: 4px 0 0; padding: 2px 14px; font-size: 1.25em; white-space: nowrap;
+    display: inline-block; margin: 8px 0 2px; padding: 4px 18px; font-size: 1.5em;
     background: #fffdf3; color: #a0740b; border: 5px double #e0b000; border-radius: 18px;
     text-shadow: 0 0 6px #ffe680;
   }
@@ -32,23 +32,12 @@
   .scene.dining { background: linear-gradient(#f7e1c8, #e9c7a5); }
   .scene.patio  { background: linear-gradient(#d6f7cd, #9fdc8f); }
   .scene.beach  { background: linear-gradient(#9fe0ff 0 30%, #3fb0e8 30% 48%, #ffffff 48% 51%, #ffe3a3 51%); }
-  .scene.disco  { background: radial-gradient(circle at 20% 40%, #ff4dd2 0 8%, transparent 9%),
-                              radial-gradient(circle at 55% 60%, #3ab7ff 0 8%, transparent 9%),
-                              radial-gradient(circle at 85% 30%, #fff200 0 8%, transparent 9%), #3b1f5e; }
-  .scene.space  { background: radial-gradient(circle at 10% 30%, #fff 0 1%, transparent 2%),
-                              radial-gradient(circle at 40% 70%, #fff 0 1%, transparent 2%),
-                              radial-gradient(circle at 75% 20%, #fff 0 1%, transparent 2%),
-                              radial-gradient(circle at 92% 75%, #fff 0 1%, transparent 2%), linear-gradient(#0b1240, #2a1a5e); }
-  .scene.fairy  { background: linear-gradient(#ffd6f5, #c8f5c8); }
-  .scene.ice    { background: linear-gradient(#ffffff, #bfe9ff); }
-  .scene.jungle { background: linear-gradient(#8fdc6f, #3f9f4f); }
-  .scene.candy  { background: repeating-linear-gradient(45deg, #ffd1ec 0 14px, #ffffff 14px 28px); }
   .seat { display: inline-block; padding: 0 3px; border-radius: 20px; cursor: pointer; }
   .seat.chosen { background: rgba(255, 255, 255, 0.75); box-shadow: 0 0 0 3px #ff8fc7; }
   .seat.hover { background: #ffe680; box-shadow: 0 0 12px #ffcf4d; }
   .vipCrown { font-size: 0.45em; vertical-align: top; }
   #walk { background: #ffcf4d; font-weight: bold; }
-  #roomName { font-size: 0.75em; }
+  #roomName { font-size: 0.9em; }
   /* The chef walks out of one room and into the next */
   #chef { display: inline-block; transition: transform 0.7s ease-in-out; }
   /* Confetti that falls when the restaurant gets a new star */
@@ -59,13 +48,13 @@
     background: white;
     border-radius: 20px;
     padding: 6px 14px;
-    font-size: 1em;
+    font-size: 1.15em;
     box-shadow: 0 3px 0 #f3b6d3;
   }
   /* The mixing bowl: a blue bowl sitting on the counter */
   .bowl {
-    position: relative; flex: none; font-size: 1.7em; min-height: 1.5em; width: 170px; margin: 0;
-    padding: 4px 6px 12px; word-break: break-all; background: linear-gradient(#bfe6ff, #6fb8ef);
+    font-size: 2.7em; min-height: 1.3em; width: 380px; max-width: 85%; margin: 2px auto 6px;
+    padding: 4px 10px 14px; background: linear-gradient(#bfe6ff, #6fb8ef);
     border-top: 7px solid #eaf7ff; border-radius: 14px 14px 50% 50% / 14px 14px 100% 100%;
     box-shadow: 0 7px 4px rgba(90, 50, 20, 0.35);
   }
@@ -75,48 +64,9 @@
   /* The ingredient that follows your finger while you drag it */
   #dragging { position: fixed; font-size: 3em; pointer-events: none; display: none; transform: translate(-50%, -50%); z-index: 10; }
   #mix {
-    font-size: 1.2em; padding: 6px 18px; border: none; border-radius: 18px;
-    background: #8fd3ff; color: white; cursor: pointer; margin: 2px;
+    font-size: 1.5em; padding: 10px 24px; border: none; border-radius: 20px;
+    background: #8fd3ff; color: white; cursor: pointer; display: none; margin: 6px;
   }
-  /* The mixing bar: fills up as you stir */
-  #mixArea { display: none; }
-  #mixBar { position: relative; width: 150px; height: 18px; margin: 4px auto; border-radius: 9px;
-            background: #eee; border: 2px solid #8fd3ff; overflow: hidden; }
-  #mixFill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: #8fd3ff; transition: width 0.3s; }
-  #mixText { position: relative; font-size: 0.8em; font-weight: bold; color: #6a2c70; }
-  /* The spoon stirs in the bowl 🥄 */
-  .bowl.stir::after {
-    content: "🥄"; position: absolute; left: 50%; top: 30%; font-size: 0.9em;
-    animation: stir 0.5s linear;
-  }
-  @keyframes stir {
-    0% { transform: translate(-60%, 0) rotate(0deg); }
-    50% { transform: translate(20%, 20%) rotate(180deg); }
-    100% { transform: translate(-60%, 0) rotate(360deg); }
-  }
-  /* The kitchen: tiles on the wall behind the bowl and the stove */
-  #kitchenTop {
-    position: relative; display: flex; align-items: center; gap: 6px; min-height: 92px;
-    padding: 6px; margin-bottom: 4px; border-radius: 12px; background-color: #f7fbff;
-    background-image: linear-gradient(#dfe7ef 2px, transparent 2px), linear-gradient(90deg, #dfe7ef 2px, transparent 2px);
-    background-size: 26px 26px;
-  }
-  #actions { flex: 1; min-width: 0; }
-  /* The stove 🍳 and what's cooking on it */
-  #station { flex: none; width: 66px; text-align: center; background: #555; border-radius: 12px;
-             padding: 4px 0; color: white; box-shadow: inset 0 -6px 0 #333; }
-  #stationIcon { font-size: 2.2em; display: inline-block; }
-  #stationLabel { font-size: 0.75em; }
-  .sizzle  { animation: sizzle 0.12s linear infinite; }
-  @keyframes sizzle { 0% { transform: translate(-1px, 0); } 50% { transform: translate(1px, -1px); } 100% { transform: translate(-1px, 0); } }
-  .bubbling { animation: bubbling 0.6s ease-in-out infinite alternate; }
-  @keyframes bubbling { from { transform: scale(1); } to { transform: scale(1.15) translateY(-3px); } }
-  .glowing { animation: glowing 1s ease-in-out infinite alternate; }
-  @keyframes glowing { from { filter: drop-shadow(0 0 2px #ff8a00); } to { filter: drop-shadow(0 0 12px #ff3d00); } }
-  .frosty { animation: frosty 1.2s ease-in-out infinite alternate; }
-  @keyframes frosty { from { filter: drop-shadow(0 0 2px #bfe9ff); } to { filter: drop-shadow(0 0 12px #3ab7ff); } }
-  .chopping { animation: chopping 0.2s ease; }
-  @keyframes chopping { 50% { transform: translateY(8px) rotate(-20deg); } }
   /* The bowl wiggles when you mix */
   .wiggle { animation: wiggle 0.3s ease; }
   @keyframes wiggle { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
@@ -134,38 +84,38 @@
   /* The kitchen counter top: ingredients sit on it, ready to drag */
   #counter {
     position: relative;
-    max-width: 600px; margin: 4px auto 0; padding: 6px 6px 10px; border-radius: 14px 14px 6px 6px;
+    max-width: 600px; margin: 6px auto 0; padding: 8px 6px 14px; border-radius: 14px 14px 6px 6px;
     background: repeating-linear-gradient(90deg, #e9c294 0 46px, #e2b885 46px 48px);
     border-bottom: 12px solid #b9875a; box-shadow: 0 6px 0 #8f6440;
   }
   #buttons button {
-    background: none; box-shadow: none; padding: 0 3px; margin: 0 2px; font-size: 2em;
+    background: none; box-shadow: none; padding: 0 4px; margin: 0 2px; font-size: 2.2em;
     filter: drop-shadow(0 4px 2px rgba(90, 50, 20, 0.45)); cursor: grab;
   }
   #buttons button:hover:not(:disabled) { transform: translateY(-4px) scale(1.1); }
-  #stars { font-size: 1em; color: #a0740b; }
-  #message { font-size: 1em; min-height: 1.3em; margin: 2px 0; }
+  #stars { font-size: 1.2em; color: #a0740b; }
+  #message { font-size: 1.3em; min-height: 1.4em; margin: 6px; }
   #again {
     font-size: 1.3em; padding: 10px 20px; border: none; border-radius: 20px;
     background: #ff8fc7; color: white; cursor: pointer; display: none;
   }
   /* The oven/freezer timer. The green part is "just right"! */
-  #cook { display: none; }
+  #cook { display: none; margin: 6px; }
   #meter {
-    position: relative; width: 90%; height: 20px; margin: 4px auto; border-radius: 10px; overflow: hidden;
+    position: relative; width: 300px; height: 24px; margin: 6px auto; border-radius: 12px; overflow: hidden;
     background: linear-gradient(to right, #eee 60%, #9be89b 60%, #9be89b 85%, #ffb3b3 85%);
     border: 3px solid #f3b6d3;
   }
   #needle { position: absolute; top: 0; bottom: 0; left: 0; width: 6px; background: #6a2c70; }
   #cook button {
-    font-size: 1.05em; padding: 6px 14px; border: none; border-radius: 18px; font-family: inherit;
+    font-size: 1.3em; padding: 8px 20px; border: none; border-radius: 20px;
     background: #ffb36b; color: white; cursor: pointer;
   }
   /* Top bar: coins, music, shop, my recipe */
   #topbar { margin: 2px 0; }
   #topbar button {
     font-size: 1em; border: none; border-radius: 12px; background: white; box-shadow: 0 2px 0 #f3b6d3;
-    cursor: pointer; padding: 2px 6px; margin: 0 1px; font-family: inherit; color: #6a2c70;
+    cursor: pointer; padding: 2px 8px; margin: 0 2px; font-family: inherit; color: #6a2c70;
   }
   .bubble { color: #6a2c70; }
   /* The kitchen pet and what it says */
@@ -173,11 +123,10 @@
   #petTalk { position: absolute; left: 70px; top: 2px; z-index: 2; white-space: nowrap; font-size: 0.28em; color: #6a2c70; background: white; border-radius: 10px; padding: 0 6px; }
   #petTalk:empty { display: none; }
   /* Decorating the food */
-  #decorate { display: none; }
+  #decorate { display: none; margin: 4px; }
   #decorate .buttons { display: inline-block; }
-  #toppings button { font-size: 1.3em; padding: 2px 5px; margin: 2px; }
   #serve {
-    font-size: 1.1em; padding: 6px 16px; border: none; border-radius: 18px; font-family: inherit;
+    font-size: 1.3em; padding: 8px 20px; border: none; border-radius: 20px;
     background: #ffcf4d; color: white; cursor: pointer; margin: 4px;
   }
   /* Pop-up windows (the color shop and the recipe maker) */
@@ -243,7 +192,7 @@
   #house { position: absolute; right: 6px; top: 4px; font-size: 2.2em; }
   /* The delivery box 📦 on the counter */
   #box {
-    display: none; position: absolute; right: 8px; top: 12px; width: 90px; padding: 4px 0; background-color: white;
+    display: none; position: absolute; right: 8px; top: 8px; width: 90px; padding: 4px 0;
     font-size: 2em; white-space: nowrap; border-radius: 16px; background: rgba(255, 255, 255, 0.5);
     border: 3px dashed #b9875a; cursor: grab; touch-action: none;
   }
@@ -257,65 +206,6 @@
   .bar { position: absolute; left: 15%; bottom: 0; height: 5px; border-radius: 3px; max-width: 70%; }
   .money { font-size: 0.5em; vertical-align: top; }
   #menuList { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; text-align: left; font-size: 1.05em; }
-  /* How many of each ingredient are left (the little number on each one) */
-  #buttons button { position: relative; }
-  #buttons button::after {
-    content: attr(data-stock); position: absolute; right: -2px; bottom: 0; font-size: 0.32em;
-    background: white; color: #6a2c70; border-radius: 8px; padding: 0 3px; font-weight: bold;
-  }
-  #buttons button.empty { opacity: 0.35; }
-  /* Cooking method buttons */
-  #methods button, #chopBtn {
-    font-size: 0.95em; padding: 5px 8px; margin: 2px; border: none; border-radius: 16px;
-    background: #fff3a8; color: #6a2c70; cursor: pointer; font-family: inherit;
-  }
-  #chopBtn { background: #ffb36b; color: white; font-size: 1.3em; }
-  /* Shop sections */
-  .panel h3 { margin: 10px 0 2px; color: #a0740b; }
-  #marketList button { font-size: 1.1em; }
-  /* Rain falling in outdoor rooms ☔ */
-  .scene.rainy::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: repeating-linear-gradient(105deg, transparent 0 14px, rgba(80, 140, 255, 0.45) 14px 16px);
-    animation: rain 0.6s linear infinite;
-  }
-  @keyframes rain { from { background-position: 0 0; } to { background-position: -12px 40px; } }
-  /* Snow falling on Snow Day ⛄ */
-  .scene.snowy::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none;
-    background-image: radial-gradient(circle, white 0 2px, transparent 3px), radial-gradient(circle, white 0 1.5px, transparent 2.5px);
-    background-size: 40px 40px, 25px 25px; background-position: 0 0, 12px 8px;
-    animation: snow 2s linear infinite;
-  }
-  @keyframes snow { to { background-position: 10px 40px, 20px 33px; } }
-  /* The garden plots 🌱 */
-  #plots button { font-size: 2em; width: 84px; height: 84px; margin: 4px; border: none; border-radius: 18px;
-                  background: #c9a27a; box-shadow: 0 4px 0 #8f6440; cursor: pointer; }
-  /* Two screens: the Front and the Kitchen */
-  #kitchenScreen { display: none; }
-  .screenBtn {
-    font-size: 1.1em; padding: 6px 18px; margin: 4px; border: none; border-radius: 18px; cursor: pointer;
-    background: #ff8fc7; color: white; font-family: inherit; box-shadow: 0 3px 0 #d65f9c;
-  }
-  /* The order counter where customers line up */
-  #orderCounter {
-    position: relative; display: flex; align-items: flex-end; gap: 8px; max-width: 600px; min-height: 110px;
-    margin: 6px auto 0; padding: 8px 10px 0; border-radius: 16px 16px 0 0;
-    background: linear-gradient(transparent 62%, #b9875a 62%, #b9875a 72%, #e9c294 72%);
-  }
-  #register { font-size: 2em; line-height: 1; background: #fff3a8; border-radius: 12px; padding: 4px 6px; margin-bottom: 14px; }
-  #register span { font-size: 0.3em; font-weight: bold; }
-  #queue { flex: 1; display: flex; align-items: flex-end; gap: 6px; }
-  .waiting { position: relative; font-size: 3em; line-height: 1.1; cursor: pointer; padding: 0 4px 10px; border-radius: 16px; }
-  .waiting.first { background: rgba(255, 255, 255, 0.6); box-shadow: 0 0 0 3px #ff8fc7; }
-  .waiting .say { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); white-space: nowrap;
-                  font-size: 0.25em; background: white; border-radius: 8px; padding: 1px 6px; color: #6a2c70; }
-  .waiting .bar { bottom: 2px; }
-  .walkIn { animation: walkIn 0.8s ease-out; }
-  @keyframes walkIn { from { transform: translateX(200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-  #tray { display: none; font-size: 2.4em; padding: 2px 8px; margin-bottom: 14px; border-radius: 16px;
-          background: white; box-shadow: 0 0 0 3px #ffcf4d; cursor: grab; touch-action: none; white-space: nowrap; }
-  #frontOrder { font-size: 1em; min-height: 1.3em; margin: 4px 0; }
   /* Bouncy cupcake when it's done */
   .pop { animation: pop 0.6s ease; }
   @keyframes pop { 0% { transform: scale(0); } 70% { transform: scale(1.4); } 100% { transform: scale(1); } }
@@ -332,79 +222,47 @@
     <button id="walk" onclick="walk()" title="Walk to the other room">🚶‍♀️ Walk</button> <span id="roomName"></span>
     <button onclick="openPanel('menu')" title="The menu and prices">📋</button>
     <button id="sink" onclick="washDish()" title="Tap to wash the dirty dishes">🧽 0</button>
-    <button onclick="openPanel('garden')" title="My garden">🌱</button>
     <button id="musicBtn" onclick="toggleMusic()">🎵</button>
-    <button onclick="openPanel('shop')" title="Shop: market, upgrades, helpers, colors">🏪</button>
+    <button onclick="openPanel('shop')" title="Kitchen colors">🎨</button>
     <button onclick="openPanel('maker')" title="Make your own recipe">📝</button>
   </div>
   <div class="leds" id="leds"><span class="disco" style="left: 2px;">🪩</span><span class="disco" style="right: 2px;">🪩</span></div>
-  <!-- Messages: what to do next -->
-  <div id="message"></div>
-
-  <!-- ===== SCREEN 1: THE FRONT 🏪 — tables, the order counter, and the line of customers ===== -->
-  <div id="front">
   <div class="scene" id="scene"><span id="chef">👩‍🍳</span><span id="pet" onclick="nextPet()" title="Tap me to change pets!">🐱</span><span id="petTalk"></span>
     &nbsp; <span id="seats"></span><span id="delivery" class="seat" onclick="pickDelivery()"></span></div>
 
-    <!-- The order counter: customers line up here to order -->
-    <div id="orderCounter">
-      <div id="register">🧾<br><span>Order<br>here!</span></div>
-      <div id="queue"></div>
-      <!-- The food you carry out to the tables (drag it to the right table!) -->
-      <div id="tray" title="Drag me to the table!"></div>
-    </div>
-    <div id="frontOrder"></div>
-    <button class="screenBtn" onclick="goKitchen()">🍳 Go to the Kitchen</button>
-  </div>
-
   <!-- The delivery road: the scooter drives the food to the friend's house -->
   <div id="road"><div id="roadInfo"></div><div id="track"><span id="scooter">🛵</span><span id="house"></span></div></div>
-
-  <!-- ===== SCREEN 2: THE KITCHEN 🍳 — cook the order ===== -->
-  <div id="kitchenScreen">
-  <button class="screenBtn" onclick="goFront()">🏪 Back to the Front</button>
   <div class="bubble">
     <span id="order"></span><br>
     Found: <span id="recipe"></span> <button id="hint" onclick="hint()">💡 Hint</button>
   </div>
 
-  <!-- The kitchen 🍳: the bowl, the stove, and the work buttons, all on the counter -->
+  <!-- The kitchen counter, with the mixing bowl on top -->
   <div id="counter">
-    <div id="kitchenTop">
-      <!-- The mixing bowl: ingredients show up here -->
-      <div class="bowl" id="bowl"></div>
-      <!-- The stove: shows the oven, pan, pot, freezer or chopping board -->
-      <div id="station"><div id="stationIcon">🍳</div><div id="stationLabel">Stove</div></div>
-      <!-- The work area: mix, cook, decorate -->
-      <div id="actions">
-        <div id="mixArea">
-          <button id="mix" onclick="mix()">Mix! 🥄</button>
-          <!-- The mixing bar: how many more stirs it needs -->
-          <div id="mixBar"><div id="mixFill"></div><span id="mixText">0/5</span></div>
-        </div>
-        <!-- Cooking: pick how, then take it out when the needle is in the green -->
-        <div id="cook">
-          <div id="methods"></div>
-          <button id="chopBtn" onclick="chop()">Chop! 🔪</button>
-          <div id="meter"><div id="needle"></div></div>
-          <button id="cookStart" onclick="startCooking()"></button>
-          <button id="cookStop" onclick="takeOut()">Take it out! 🧤</button>
-        </div>
-        <!-- Decorating: tap toppings, then serve! -->
-        <div id="decorate">
-          <div class="buttons" id="toppings"></div>
-          <button id="serve" onclick="serve()">Serve! 🛎️</button>
-        </div>
-      </div>
-      <!-- The delivery box: pack the food in it before it goes on the scooter -->
-      <div id="box"></div>
-    </div>
+    <!-- The mixing bowl: ingredients show up here -->
+    <div class="bowl" id="bowl"></div>
+    <!-- The delivery box: pack the food in it before it goes on the scooter -->
+    <div id="box"></div>
     <!-- Ingredient buttons get made by the script below -->
     <div class="buttons" id="buttons"></div>
   </div>
-  </div>
 
   <div id="dragging"></div>
+  <button id="mix" onclick="mix()">Mix! 🥄</button>
+
+  <!-- Cooking: start it, then take it out when the needle is in the green -->
+  <div id="cook">
+    <div id="meter"><div id="needle"></div></div>
+    <button id="cookStart" onclick="startCooking()"></button>
+    <button id="cookStop" onclick="takeOut()">Take it out! 🧤</button>
+  </div>
+  <!-- Decorating: tap up to 3 toppings, then serve! -->
+  <div id="decorate">
+    <div class="buttons" id="toppings"></div>
+    <button id="serve" onclick="serve()">Serve! 🛎️</button>
+  </div>
+
+  <div id="message"></div>
 
   <!-- The menu: every food and its price -->
   <div class="panel" id="menu">
@@ -422,15 +280,6 @@
     <button onclick="leaveParty()">Back to the restaurant 🚐</button>
   </div>
 
-  <!-- My garden: grow free ingredients! -->
-  <div class="panel" id="garden">
-    <h2>🌱 My Garden</h2>
-    <div>Tap to plant 🌱, tap to water 💧 (3 times), then pick your food! 🧺</div>
-    <div id="plots"></div>
-    <div id="gardenMsg"></div>
-    <button onclick="closePanel('garden')">Close ❌</button>
-  </div>
-
   <!-- Closing time: how did today go? -->
   <div class="panel" id="dayEnd">
     <h2>🌙 Closing Time!</h2>
@@ -440,19 +289,10 @@
 
   <!-- The color shop: spend your tip coins on new kitchen colors -->
   <div class="panel" id="shop">
-    <h2>🏪 Shop</h2>
+    <h2>🎨 Kitchen Colors</h2>
     <div>You have 🪙 <span id="shopCoins">0</span> coins</div>
-    <div id="shopMsg"></div>
-    <h3>🛒 Market: buy ingredients (5 for 🪙2)</h3>
-    <div class="pick" id="marketList"></div>
-    <h3>📈 Kitchen Upgrades</h3>
-    <div id="upgradeList"></div>
-    <h3>👥 Hire Helpers</h3>
-    <div id="helperList"></div>
-    <h3>🤖 Build a Robot</h3>
-    <div id="robotList"></div>
-    <h3>🎨 Kitchen Colors</h3>
     <div id="themeList"></div>
+    <div id="shopMsg"></div>
     <button onclick="closePanel('shop')">Close ❌</button>
   </div>
 
@@ -473,17 +313,6 @@
   </div>
 
 <script>
-  // Moving your game to the app: a one-time link ending in "#move=..." brings your saved game along.
-  // (It only copies game progress on this computer, then the link cleans itself up.)
-  try {
-    if (location.hash.indexOf("#move=") === 0) {
-      const moved = JSON.parse(decodeURIComponent(location.hash.slice(6)));
-      if (moved.save) localStorage.setItem("kikkiSave", JSON.stringify(moved.save));
-      if (moved.recipes) localStorage.setItem("kikkiRecipes", JSON.stringify(moved.recipes));
-      history.replaceState(null, "", location.pathname);
-    }
-  } catch (e) { /* nothing to move */ }
-
   // The customers! Each one wants a food with 5 ingredients, added IN ORDER.
   // cook: "hot" goes in the oven, "cold" goes in the freezer.
   const customers = [
@@ -507,18 +336,11 @@
     { who: "🐳", name: "Whale",    food: "🍙", foodName: "rice balls",       cook: "cold", needs: ["🍚", "🥕", "🥒", "🥑", "🌽"] },
     { who: "🦋", name: "Butterfly", food: "🥪", foodName: "a honey sandwich", cook: "cold", needs: ["🍞", "🧈", "🍯", "🍌", "🍓"] },
     { who: "🐿️", name: "Squirrel", food: "🧁", foodName: "cherry cupcakes",  cook: "hot",  needs: ["🌾", "🥚", "🧈", "🍫", "🍒"] },
-    // These unlock when you become a better chef! (level 2, 3 and 4)
-    { who: "🐑", name: "Sheep",      food: "🧇", foodName: "waffles",          cook: "hot",  level: 2, needs: ["🌾", "🥚", "🥛", "🧈", "🍯"] },
-    { who: "🦆", name: "Duck",       food: "🍲", foodName: "veggie stew",      cook: "hot",  level: 2, needs: ["🥕", "🧅", "🍅", "🍄", "🥬"] },
-    { who: "🐻‍❄️", name: "Polar Bear", food: "🥟", foodName: "dumplings",       cook: "hot",  level: 3, needs: ["🌾", "🥬", "🥕", "🧅", "🍄"] },
-    { who: "🦩", name: "Flamingo",   food: "🍰", foodName: "strawberry shortcake", cook: "hot", level: 3, needs: ["🌾", "🥚", "🥛", "🍓", "🧈"] },
-    { who: "🐞", name: "Ladybug",    food: "🍮", foodName: "honey pudding",    cook: "cold", level: 4, needs: ["🥛", "🥚", "🍯", "🍫", "🍒"] },
-    { who: "🦭", name: "Seal",       food: "🍱", foodName: "a bento box",      cook: "cold", level: 4, needs: ["🍚", "🐟", "🥕", "🥒", "🥑"] },
   ];
 
   // Every ingredient in the kitchen
   const pantry = ["🥚", "🧈", "🥛", "🍫", "🍓", "🌾", "🍅", "🧀", "🍄", "🫑", "🍚", "🐟", "🥒",
-                  "🥑", "🥕", "🍌", "🍒", "🥬", "🌽", "🍜", "🧅", "🍯", "🍞", "🫐", "🍎", "🍉", "🍍", "🌶️"];
+                  "🥑", "🥕", "🍌", "🍒", "🥬", "🌽", "🍜", "🧅", "🍯", "🍞", "🫐", "🍎", "🍉", "🍍"];
 
   let current = null;   // the customer we are cooking for
   let added = [];       // ingredients already in the bowl
@@ -573,39 +395,22 @@
 
   // Stir the bowl! 5 stirs and the food is ready.
   function mix() {
-    mixes = (has("spoon") || robotDone()) ? 5 : mixes + 1;   // ✨ Magic Spoon or 🤖 Robo mixes in 1 tap
+    mixes = mixes + 1;
     // No more extras once we start mixing
     document.querySelectorAll("#buttons button").forEach(b => b.disabled = true);
     const bowl = document.getElementById("bowl");
-    // Stir! The ingredients swirl around in the bowl
-    const inBowl = added.concat(extras).sort(() => Math.random() - 0.5);
-    bowl.textContent = inBowl.join("");
-    bowl.classList.remove("stir", "wiggle");
-    void bowl.offsetWidth;          // restart the stir animation
-    bowl.classList.add("stir", "wiggle");
-    setTimeout(() => bowl.classList.remove("stir"), 500);   // put the spoon down after stirring
-    noise(0.3, 700, 0.12);          // swish!
-    showMixBar();
-    document.getElementById("message").textContent =
-      mixes < 5 ? "Stir, stir! " + (5 - mixes) + " more to go 🥄" : (robotDone() ? "🤖 Robo mixed it all! " : "All mixed! ") + "✨";
+    bowl.classList.remove("wiggle");
+    void bowl.offsetWidth;          // restart the wiggle animation
+    bowl.classList.add("wiggle");
+    beep(300 + mixes * 80);
+    document.getElementById("message").textContent = "Mixing... " + "🌀".repeat(mixes);
     if (mixes === 5) {
-      setTimeout(() => {
-        document.getElementById("mixArea").style.display = "none";
-        readyToCook();
-      }, 600);
+      document.getElementById("mix").style.display = "none";
+      setTimeout(readyToCook, 400);
     }
   }
 
   // ---- Hint 💡: one missing ingredient on the counter glows and bounces ----
-  let hintsLeft = 2;   // 2 hints for each dish
-
-  // The hint button shows how many hints are left, like "💡 Hint (2)"
-  function showHintButton() {
-    const b = document.getElementById("hint");
-    b.textContent = "💡 Hint (" + hintsLeft + ")";
-    b.style.opacity = hintsLeft > 0 ? 1 : 0.4;
-  }
-
   function hint() {
     if (!current) {
       document.getElementById("message").textContent = "Tap a customer first! 👆";
@@ -613,14 +418,6 @@
     }
     const missing = current.needs.filter(n => !added.includes(n));
     if (missing.length === 0) return;
-    // Only 2 hints for each dish!
-    if (hintsLeft <= 0) {
-      document.getElementById("message").textContent = "No more hints for this dish! You can figure it out, chef! 💪";
-      beep(250);
-      return;
-    }
-    hintsLeft = hintsLeft - 1;
-    showHintButton();
     const pick = missing[Math.floor(Math.random() * missing.length)];
     const b = [...document.querySelectorAll("#buttons button")].find(x => x.textContent === pick);
     b.classList.remove("glow");
@@ -638,117 +435,26 @@
       added.join(" ") + " " + "❓".repeat(current.needs.length - added.length);
   }
 
-  // ---- Cooking 🍳: every food needs the right way to cook it! ----
-  const methods = {
-    bake:   { icon: "🔥", verb: "bake",   button: "🔥 Bake",   start: "Put it in the oven 🔥" },
-    fry:    { icon: "🍳", verb: "fry",    button: "🍳 Fry",    start: "Put it in the pan 🍳" },
-    boil:   { icon: "🫕", verb: "boil",   button: "🫕 Boil",   start: "Put it in the pot 🫕" },
-    freeze: { icon: "❄️", verb: "freeze", button: "❄️ Freeze", start: "Put it in the freezer ❄️" },
-    chop:   { icon: "🔪", verb: "chop",   button: "🔪 Chop",   start: "" },
-  };
-  // Which way each food is cooked
-  const foodMethod = {
-    "🎂": "bake", "🍕": "bake", "🥧": "bake", "🍪": "bake", "🧁": "bake",
-    "🥞": "fry",  "🍔": "fry",  "🌭": "fry",  "🍩": "fry",  "🍳": "fry",
-    "🍜": "boil", "🍝": "boil", "🍲": "boil", "🥟": "boil",
-    "🍨": "freeze", "🍧": "freeze", "🥤": "freeze",
-    "🥗": "chop", "🍣": "chop", "🍙": "chop", "🥪": "chop",
-    "🧇": "fry", "🍰": "bake", "🍮": "freeze", "🍱": "chop",
-  };
-  function methodOf(c) {
-    if (c.mine) return c.cook === "hot" ? "bake" : "freeze";   // your own recipes: oven or freezer
-    return foodMethod[c.food] || (c.cook === "hot" ? "bake" : "freeze");
-  }
-
+  // ---- Cooking: oven 🔥 or freezer ❄️ ----
   let heat = 0;          // how far the needle has moved (0 to 100)
   let cookTimer = null;
-  let chops = 0;
 
-  // The green "just right" part of the meter (the Super Oven makes it bigger!)
-  function greenFrom() { return has("oven") ? 50 : 60; }
-  function greenTo() { return has("oven") ? 90 : 85; }
-
-  // Step 1: pick how to cook it
   function readyToCook() {
+    const hot = current.cook === "hot";
     document.getElementById("bowl").textContent = foodLook();
-    document.getElementById("cook").style.display = "block";
-    document.getElementById("meter").style.display = "none";
-    document.getElementById("cookStart").style.display = "none";
-    document.getElementById("cookStop").style.display = "none";
-    document.getElementById("chopBtn").style.display = "none";
-    const box = document.getElementById("methods");
-    box.textContent = "";
-    box.style.display = "block";
-    Object.keys(methods).forEach(m => {
-      const b = document.createElement("button");
-      b.textContent = methods[m].button;
-      b.onclick = () => pickMethod(m);
-      box.appendChild(b);
-    });
-    document.getElementById("message").textContent = "How do you cook " + current.foodName + "? Pick one! 🤔";
-  }
-
-  function pickMethod(m) {
-    if (m !== methodOf(current)) {
-      oops = oops + 1;
-      document.getElementById("message").textContent =
-        "Hmm, you don't " + methods[m].verb + " " + current.foodName + "! Try another 🙈";
-      beep(200);
-      petSay("Not like that!");
-      return;
-    }
-    document.getElementById("methods").style.display = "none";
-    beep(800);
-    setStation(m);
-    if (m === "chop") {
-      chops = 0;
-      document.getElementById("chopBtn").style.display = "inline-block";
-      document.getElementById("message").textContent = "Chop chop! Tap 🔪 6 times!";
-    } else {
-      showMeter(m);
-    }
-  }
-
-  // Chop, chop, chop! 6 chops and it's ready
-  function chop() {
-    chops = robotDone() ? 6 : chops + 1;   // 🤖 Robo chops it all at once
-    const knife = document.getElementById("stationIcon");
-    knife.classList.remove("chopping");
-    void knife.offsetWidth;
-    knife.classList.add("chopping");
-    noise(0.06, 1800, 0.2);           // chop!
-    beep(180, 0.08, 0.05);
-    document.getElementById("message").textContent = "Chop! " + "🔪".repeat(chops);
-    if (chops >= 6) {
-      document.getElementById("cook").style.display = "none";
-      startDecorate();
-    }
-  }
-
-  // Step 2: the timing meter for baking, frying, boiling and freezing
-  function showMeter(m) {
-    const meter = document.getElementById("meter");
-    meter.style.display = "block";
-    meter.style.background = "linear-gradient(to right, #eee " + greenFrom() + "%, #9be89b " + greenFrom() +
-      "%, #9be89b " + greenTo() + "%, #ffb3b3 " + greenTo() + "%)";
     document.getElementById("cook").style.display = "block";
     document.getElementById("cookStart").style.display = "inline-block";
-    document.getElementById("cookStart").textContent = methods[m].start;
+    document.getElementById("cookStart").textContent = hot ? "Put it in the oven 🔥" : "Put it in the freezer ❄️";
     document.getElementById("cookStop").style.display = "none";
     document.getElementById("needle").style.left = "0%";
-    document.getElementById("bowl").textContent = foodLook();
     document.getElementById("message").textContent = "Take it out when the needle is in the GREEN! 💚";
   }
 
   function startCooking() {
     heat = 0;
-    const icon = methods[methodOf(current)].icon;
     document.getElementById("cookStart").style.display = "none";
     document.getElementById("cookStop").style.display = "inline-block";
-    document.getElementById("bowl").textContent = foodLook();
-    document.getElementById("stationIcon").className =
-      { bake: "glowing", fry: "sizzle", boil: "bubbling", freeze: "frosty" }[methodOf(current)];
-    startCookSound(methodOf(current));
+    document.getElementById("bowl").textContent = current.cook === "hot" ? "🔥" + foodLook() + "🔥" : "❄️" + foodLook() + "❄️";
     cookTimer = setInterval(() => {
       heat = heat + 1.5;
       document.getElementById("needle").style.left = Math.min(heat, 98) + "%";
@@ -757,13 +463,11 @@
   }
 
   function takeOut() {
-    if (heat < greenFrom()) {
+    if (heat < 60) {
       document.getElementById("message").textContent = "Not ready yet! Wait for the green ⏳";
       beep(250);
-    } else if (heat <= greenTo()) {
+    } else if (heat <= 85) {
       clearInterval(cookTimer);
-      stopCookSound();
-      setStation(null);
       document.getElementById("cook").style.display = "none";
       startDecorate();
     } else {
@@ -771,24 +475,17 @@
     }
   }
 
-  // Oops! Cooked too long. Try the timing again.
+  // Oops! Cooked too long. Mix again and try one more time.
   function cookedTooLong() {
     clearInterval(cookTimer);
-    stopCookSound();
-    document.getElementById("stationIcon").className = "";
     oops = oops + 1;
-    const m = methodOf(current);
-    const looks = { bake: "💨⬛💨", fry: "💨⬛💨", boil: "💦💦💦", freeze: "🧊🧊🧊" };
-    const words = {
-      bake: "Oops! It got burnt! 🔥",
-      fry: "Oops! It got burnt in the pan! 🍳",
-      boil: "Oops! The pot bubbled over! 💦",
-      freeze: "Oops! It froze like a rock! 🧊",
-    };
-    document.getElementById("bowl").textContent = looks[m];
-    document.getElementById("message").textContent = words[m] + " Let's try again!";
+    const hot = current.cook === "hot";
+    document.getElementById("bowl").textContent = hot ? "💨⬛💨" : "🧊🧊🧊";
+    document.getElementById("message").textContent = hot
+      ? "Oops! It got burnt! 🔥 Let's cook it again!"
+      : "Oops! It froze like a rock! 🧊 Let's try again!";
     beep(180);
-    setTimeout(() => showMeter(m), 1500);
+    setTimeout(readyToCook, 1500);
   }
 
   // ---- The restaurant rooms 🏠, each with 3 tables ----
@@ -796,12 +493,6 @@
     { name: "🍽️ Dining Room",  deco: "🕯️", look: "dining", seats: [] },
     { name: "🌷 Garden Patio", deco: "🌷", look: "patio",  seats: [] },
     { name: "🏖️ Beach Deck",   deco: "⛱️", look: "beach",  seats: [] },
-    { name: "🪩 Disco Hall",    deco: "🪩", look: "disco",  seats: [] },
-    { name: "🚀 Space Room",    deco: "🚀", look: "space",  seats: [] },
-    { name: "🧚 Fairy Garden",  deco: "🍄", look: "fairy",  seats: [] },
-    { name: "🧊 Ice Palace",    deco: "❄️", look: "ice",    seats: [] },
-    { name: "🌴 Jungle Hut",    deco: "🌴", look: "jungle", seats: [] },
-    { name: "🍭 Candy Land",    deco: "🍭", look: "candy",  seats: [] },
   ];
   let roomNow = 0;       // which room we are looking at
   let currentSeat = null; // { room, index } of the customer we are cooking for
@@ -814,14 +505,10 @@
       pick = Object.assign({}, nextUp);
       nextUp = null;
     } else {
-      const sitting = rooms.flatMap(r => r.seats).concat(queue).filter(c => c).map(c => c.name);
+      const sitting = rooms.flatMap(r => r.seats).filter(c => c).map(c => c.name);
       let tries = 0;
-      // On a hot day ☀️, lots of customers want something cold!
-      const wantCold = weather && weather.type === "hot" && Math.random() < 0.5;
-      const unlocked = customers.filter(c => (c.level || 1) <= chefLevel());
-      const choices = wantCold ? unlocked.filter(c => c.cook === "cold") : unlocked;
       do {
-        pick = choices[Math.floor(Math.random() * choices.length)];
+        pick = customers[Math.floor(Math.random() * customers.length)];
         tries++;
       } while (sitting.includes(pick.name) && tries < 20);
       pick = Object.assign({}, pick);
@@ -829,39 +516,11 @@
       if (Math.random() < 0.2) {
         const vip = vips[Math.floor(Math.random() * vips.length)];
         Object.assign(pick, { who: vip.who, name: vip.name, vip: true });
-      } else if (Math.random() < 0.08) {
-        // A secret food critic! 🕵️ Cook them a PERFECT meal to win a golden award
-        Object.assign(pick, { who: "🕵️", name: "Food Critic", critic: true });
       }
-    }
-    // Picky customers! Some say "NO onions!" and some want it SPICY 🌶️
-    pick.needs = pick.needs.slice();
-    pick.noItem = null;
-    pick.spicy = false;
-    const picky = Math.random();
-    if (picky < 0.2) {
-      pick.noItem = pick.needs[Math.floor(Math.random() * pick.needs.length)];
-      pick.needs = pick.needs.filter(n => n !== pick.noItem);
-    } else if (picky < 0.35) {
-      pick.spicy = true;
-      pick.needs.push("🌶️");
     }
     // Sometimes the customer asks for an extra, like extra cheese!
     pick.extraWanted = Math.random() < 0.4 ? pick.needs[Math.floor(Math.random() * pick.needs.length)] : null;
     pick.patience = 100;   // goes down while they wait
-    // Combo order! 🍔+🥤 Some customers want 2 foods
-    pick.combo = null;
-    pick.firstDish = null;
-    pick.comboPrice = 0;
-    if (!pick.critic && Math.random() < 0.15) {
-      const others = customers.filter(c => (c.level || 1) <= chefLevel() && c.food !== pick.food);
-      const two = others[Math.floor(Math.random() * others.length)];
-      pick.combo = { food: two.food, foodName: two.foodName, needs: two.needs.slice(), cook: two.cook, mine: two.mine };
-      pick.comboPrice = 5;
-    }
-    // Costume Party Day 🎃: everyone comes in a fun costume
-    pick.costume = specialDay && specialDay.type === "costume"
-      ? ["🎃", "🧙", "🦸", "🎀", "🤠"][Math.floor(Math.random() * 5)] : null;
     return pick;
   }
 
@@ -870,9 +529,7 @@
     const room = rooms[roomNow];
     const box = document.getElementById("seats");
     box.textContent = "";
-    document.getElementById("scene").className = "scene " + room.look +
-      (isOpen && weather && weather.type === "rain" && outdoor(roomNow) ? " rainy" : "") +
-      (isOpen && specialDay && specialDay.type === "snow" ? " snowy" : "");
+    document.getElementById("scene").className = "scene " + room.look;
     room.seats.forEach((c, i) => {
       const seat = document.createElement("span");
       seat.className = "seat";
@@ -914,11 +571,11 @@
         seat.appendChild(bar);
         showPatience(bar, c);
       }
-      if (c.vip || c.costume) {
-        // A little crown for VIP guests (or a fun costume on Costume Party Day)
+      if (c.vip) {
+        // A little crown for VIP guests
         const crown = document.createElement("span");
         crown.className = "vipCrown";
-        crown.textContent = c.vip ? "👑" : c.costume;
+        crown.textContent = "👑";
         seat.appendChild(crown);
       }
       seat.onclick = () => pickCustomer(i);
@@ -936,9 +593,8 @@
   // Walk 🚶‍♀️ to the other room: walk out one side, come in the other side
   let walking = false;
   function walk() {
-    goFront();
-    if (walking) return;
-    if (busy() && !serving) {
+    if (walking || serving) return;
+    if (busy()) {
       document.getElementById("message").textContent = "Finish this dish first! 🍳";
       return;
     }
@@ -966,12 +622,12 @@
 
   // Go to another room
   function goToRoom(r) {
-    if (busy() && !serving) {
+    if (busy()) {
       document.getElementById("message").textContent = "Finish this dish first! 🍳";
       return;
     }
     roomNow = r;
-    if (currentSeat && !currentSeat.delivery && !serving && currentSeat.room !== r) clearOrder();
+    if (currentSeat && !currentSeat.delivery && currentSeat.room !== r) clearOrder();
     showSeats();
   }
 
@@ -988,13 +644,13 @@
     extraWanted = c.extraWanted;
     resetDish();
     document.getElementById("order").textContent = (current.vip ? "👑 VIP! " : "") +
-      current.name + ' says: "Can I have ' + orderWords(current) + ', please?" ' + current.food;
+      current.name + ' says: "Can I have ' + current.foodName +
+      (extraWanted ? " with EXTRA " + extraWanted : "") + ', please?" ' + current.food;
     showRecipe();
     document.getElementById("message").textContent = "What goes in it? Guess and drag ingredients into the bowl! 🤔";
     petSay("New order!");
     beep(600);
     showSeats();
-    goKitchen();
   }
 
   // ---- Delivery 📞🛵: friends call and order food to their house ----
@@ -1015,9 +671,7 @@
       if (deliveryOrder) { phoneRingsLater(20000); return; }
       deliveryOrder = newCustomer();
       deliveryOrder.place = places[Math.floor(Math.random() * places.length)];
-      const kind = Math.random();
-      if (kind < 0.2) makeParty(false);          // 🎉 a party
-      else if (kind < 0.35) makeParty(true);     // 🍱 school trip lunchboxes
+      if (Math.random() < 0.35) makeParty();
       showPhone();
       beep(1200); setTimeout(() => beep(1200), 250);
       petSay("The phone is ringing!");
@@ -1028,9 +682,7 @@
   function showPhone() {
     const d = document.getElementById("delivery");
     const ours = currentSeat && currentSeat.delivery;
-    d.textContent = ours
-      ? (currentSeat.party ? (deliveryOrder && deliveryOrder.lunch ? "🍱" : "🎉") : "🛵")
-      : (deliveryOrder ? "📞" : "");
+    d.textContent = ours ? (currentSeat.party ? "🎉" : "🛵") : (deliveryOrder ? "📞" : "");
     d.classList.toggle("ringing", !!deliveryOrder && !ours);
     d.classList.toggle("chosen", !!ours);
     d.title = deliveryOrder ? "Delivery order! Tap to answer" : "";
@@ -1053,34 +705,29 @@
     resetDish();
     document.getElementById("order").textContent = "📞 Delivery! " + (current.vip ? "👑 " : "") +
       current.name + " at " + current.place.name + " " + current.place.home + ' says: "Can I have ' +
-      orderWords(current) + ', please?" ' + current.food;
+      current.foodName + (extraWanted ? " with EXTRA " + extraWanted : "") + ', please?" ' + current.food;
     showRecipe();
     document.getElementById("message").textContent = "What goes in it? Guess and drag ingredients into the bowl! 🤔";
     petSay("A delivery!");
     beep(600);
     showSeats();
-    goKitchen();
   }
 
   // ---- Parties 🎉: cook 3 dishes, then go to the party and serve them! ----
   const partyKinds = ["Birthday Party 🎂", "Tea Party 🫖", "Picnic Party 🧺", "Dance Party 🪩", "Pajama Party 🛌"];
 
   // Turn the phone call into a party order with 3 guests
-  function makeParty(lunch) {
+  function makeParty() {
     const host = deliveryOrder;
     host.party = true;
-    host.lunch = lunch;
-    host.kind = lunch ? "School Trip Lunchbox 🚌" : partyKinds[Math.floor(Math.random() * partyKinds.length)];
-    // Different guests and foods (a party has 3 dishes, a lunchbox has 4 foods)
-    const count = lunch ? 4 : 3;
+    host.kind = partyKinds[Math.floor(Math.random() * partyKinds.length)];
+    // 3 different guests (not the same animal as the host or each other)
     host.guests = [];
     let tries = 0;
-    while (host.guests.length < count && tries < 80) {
+    while (host.guests.length < 3 && tries < 50) {
       const g = newCustomer();
       tries++;
-      g.combo = null;
-      g.comboPrice = 0;
-      if (!g.critic && g.name !== host.name && !host.guests.some(x => x.name === g.name || x.food === g.food)) host.guests.push(g);
+      if (g.name !== host.name && !host.guests.some(x => x.name === g.name)) host.guests.push(g);
     }
     host.step = 0;       // which dish we are making
     host.tray = [];      // the dishes that are ready
@@ -1094,17 +741,13 @@
     extraWanted = null;
     resetDish();
     document.getElementById("order").textContent =
-      (party.lunch
-        ? "🍱 " + party.kind + " for " + party.name + "'s class — food " + (party.step + 1) + " of " + party.guests.length +
-          ": " + orderWords(current) + " " + current.food
-        : "🎉 " + party.name + "'s " + party.kind + " at " + party.place.name + " " + party.place.home +
-          " — dish " + (party.step + 1) + " of " + party.guests.length + ": " + current.name + " wants " + orderWords(current) + " " + current.food);
+      "🎉 " + party.name + "'s " + party.kind + " at " + party.place.name + " " + party.place.home +
+      " — dish " + (party.step + 1) + " of 3: " + current.name + " wants " + current.foodName + " " + current.food;
     showRecipe();
     document.getElementById("message").textContent = "Party dish " + (party.step + 1) + "! What goes in it? 🤔";
     petSay("A party!");
     beep(600);
     showSeats();
-    goKitchen();
   }
 
   // A dish goes onto the party tray. After 3 dishes, it's party time!
@@ -1113,11 +756,10 @@
     party.tray.push(dish);
     party.step = party.step + 1;
     beep(880); setTimeout(() => beep(1100), 120);
-    if (party.step < party.guests.length) {
+    if (party.step < 3) {
       startPartyDish();
       document.getElementById("message").textContent =
-        (party.lunch ? "In the lunchbox! " : "On the tray! ") + party.tray.join(" ") +
-        " Now " + (party.step + 1) + " of " + party.guests.length + "! 🍽️";
+        "On the tray! " + party.tray.join(" ") + " Now dish " + (party.step + 1) + " of 3! 🍽️";
       return;
     }
     partyTime();
@@ -1128,31 +770,18 @@
     const party = deliveryOrder;
     const pay = party.guests.reduce((sum, g) => sum + priceOf(g), 0) + 10;
     addCoins(pay);
-    const n = party.guests.length;
-    todayServed = todayServed + n;
-    challengeStep("serve", n);
-    gainXP(30);
-    challengeStep("delivery", 1);
-    party.guests.forEach(g => challengeStep("food", 1, g.food));
-    served = served + n;
+    todayServed = todayServed + 3;
+    served = served + 3;
     totalStars = totalStars + 10;
     const newLevel = Math.min(5, 1 + Math.floor(totalStars / 10));
     if (newLevel > level) { level = newLevel; setTimeout(levelUp, 1500); }
     showRating();
     document.getElementById("bowl").textContent = "";
-    if (party.lunch) {
-      document.getElementById("partyTitle").textContent = "🚌 The School Trip Lunchboxes are ready!";
-      document.getElementById("partyGuests").textContent = "🚌💨 " + party.who + " " + party.guests.map(g => g.who).join(" ");
-      document.getElementById("partyTable").textContent = "🍱 " + party.tray.join(" ") + " 🍱";
-      document.getElementById("partyReport").textContent =
-        "Everyone has a yummy lunch for the trip! ⭐⭐⭐⭐⭐ You earned 🪙 " + pay + " (with a 🪙10 bonus!)";
-    } else {
-      document.getElementById("partyTitle").textContent = "🎉 " + party.name + "'s " + party.kind + "!";
-      document.getElementById("partyGuests").textContent = party.who + " " + party.guests.map(g => g.who).join(" ") + " 🎈";
-      document.getElementById("partyTable").textContent = party.place.home + " " + party.tray.join(" ") + " " + party.place.home;
-      document.getElementById("partyReport").textContent =
-        "Everyone loved your food! ⭐⭐⭐⭐⭐ You earned 🪙 " + pay + " (with a 🪙10 party bonus!)";
-    }
+    document.getElementById("partyTitle").textContent = "🎉 " + party.name + "'s " + party.kind + "!";
+    document.getElementById("partyGuests").textContent = party.who + " " + party.guests.map(g => g.who).join(" ") + " 🎈";
+    document.getElementById("partyTable").textContent = party.place.home + " " + party.tray.join(" ") + " " + party.place.home;
+    document.getElementById("partyReport").textContent =
+      "Everyone loved your food! ⭐⭐⭐⭐⭐ You earned 🪙 " + pay + " (with a 🪙10 party bonus!)";
     openPanel("partyScene");
     confetti();
     petSay("Party time!");
@@ -1163,8 +792,6 @@
   // Back to work after the party
   function leaveParty() {
     closePanel("partyScene");
-    hideTray();
-    goFront();
     deliveryOrder = null;
     clearOrder();
     showSeats();
@@ -1217,10 +844,7 @@
 
   // What each food costs on the menu (VIPs pay double!)
   function priceOf(c) {
-    let price = (c.cook === "hot" ? 6 : 5) * (c.vip ? 2 : 1) + (c.comboPrice || 0);
-    if (specialDay && specialDay.type === "food" && c.food === specialDay.food) price = price * 2;   // 🍕 Day!
-    if (specialDay && specialDay.type === "snow" && c.cook === "hot") price = price * 2;            // ⛄ hot food on a snow day
-    return price;
+    return (c.cook === "hot" ? 6 : 5) * (c.vip ? 2 : 1);
   }
 
   // Get coins (and remember how many we got today)
@@ -1228,7 +852,6 @@
     coins = coins + n;
     todayCoins = todayCoins + n;
     document.getElementById("coins").textContent = coins;
-    if (n > 0) challengeStep("coins", n);
   }
 
   // Redraw the tables, but never in the middle of a drag (the target would disappear!)
@@ -1247,12 +870,8 @@
       isOpen = false;
       clearOrder();
       rooms.forEach(r => { r.seats = [null, null, null]; });
-      queue = [];
-      showQueue();
-      goFront();
       deliveryOrder = null;
       clearTimeout(phoneTimer);
-      specialDay = null;
       document.getElementById("dayReport").textContent =
         "Today you served " + todayServed + " customers and earned 🪙 " + todayCoins + " coins! " +
         (todayServed >= 5 ? "Amazing day, chef! 🌟" : "Great job, chef! 💖");
@@ -1263,21 +882,9 @@
       isOpen = true;
       todayServed = 0;
       todayCoins = 0;
-      weather = weathers[Math.floor(Math.random() * weathers.length)];
-      pickSpecialDay();
-      newChallenge();
-      document.getElementById("message").textContent =
-        "Good morning! It's a " + weather.icon + " " + weather.name + "! " +
-        (specialDay ? "And it's " + specialDay.icon + " " + specialDay.name + ": " + specialDay.info + " " : "") +
-        "Today's challenge: 🏆 " + challenge.text;
-      // The first customer walks up to the counter
-      setTimeout(() => {
-        if (!isOpen || queue.length) return;
-        const c = newCustomer();
-        c.justArrived = true;
-        queue.push(c);
-        showQueue();
-      }, 1500);
+      document.getElementById("message").textContent = "Good morning! The restaurant is OPEN! ☀️ Customers are coming!";
+      // Customers walk in one by one
+      rooms.forEach((r, ri) => r.seats.forEach((c, i) => fillSeatLater(ri, i, 1000 + (ri * 3 + i) * 1500)));
       phoneRingsLater(15000);
       beep(523); setTimeout(() => beep(659), 150); setTimeout(() => beep(784), 300);
     }
@@ -1286,6 +893,15 @@
     sign.classList.toggle("open", isOpen);
     updateSky();
     showSeats();
+  }
+
+  // A new customer sits at an empty seat after a little while (only when open)
+  function fillSeatLater(ri, i, ms) {
+    setTimeout(() => {
+      if (!isOpen || rooms[ri].seats[i] !== null) return;
+      rooms[ri].seats[i] = newCustomer();
+      redrawSeats();
+    }, ms);
   }
 
   // Ka-ching! Take the money at the cash register 💵
@@ -1297,7 +913,7 @@
       "Ka-ching! 💵 " + c.name + " paid 🪙" + priceOf(c) + ". Now clear the table 🧽";
     beep(1318); setTimeout(() => beep(1568), 100);
     petSay("Ka-ching!");
-    redrawSeats();
+    showSeats();
     saveProgress();
   }
 
@@ -1308,7 +924,8 @@
     showSink();
     document.getElementById("message").textContent = "Dishes in the sink! Tap 🧽 to wash them 🫧";
     beep(500);
-    redrawSeats();
+    showSeats();
+    fillSeatLater(ri, i, 2500);
   }
 
   // Scrub, scrub, scrub! 3 scrubs washes one dish.
@@ -1344,7 +961,6 @@
     if (!isOpen) return;
     let someoneLeft = false;
     rooms.forEach((r, ri) => r.seats.forEach((c, i) => {
-      if (ri !== roomNow) return;   // customers in other rooms wait patiently
       if (!c || c.dirty || c.eating || c.paying || c === current) return;
       c.patience = c.patience - 100 / 150;   // about 2 and a half minutes of waiting
       if (c.patience <= 0) {
@@ -1352,22 +968,9 @@
         someoneLeft = true;
         document.getElementById("message").textContent =
           c.who + " " + c.name + " got too hungry and went home. Try to be a bit faster! 🏃‍♀️";
+        fillSeatLater(ri, i, 3000);
       }
     }));
-    // Customers waiting in line get hungry too!
-    queue.forEach(c => { c.patience = c.patience - 100 / 120; });
-    const leaving = queue.filter(c => c.patience <= 0);
-    if (leaving.length) {
-      queue = queue.filter(c => c.patience > 0);
-      document.getElementById("message").textContent =
-        leaving[0].who + " " + leaving[0].name + " waited too long in line and went home. Take orders faster! 🏃‍♀️";
-      showQueue();
-    } else {
-      document.querySelectorAll("#queue .waiting").forEach((w, i) => {
-        const bar = w.querySelector(".bar");
-        if (bar && queue[i]) showPatience(bar, queue[i]);
-      });
-    }
     if (someoneLeft) { redrawSeats(); return; }
     // Just update the bars in the room we see (no redraw, so dragging still works)
     const seatEls = document.querySelectorAll("#seats .seat");
@@ -1383,10 +986,7 @@
     list.textContent = "";
     customers.forEach(c => {
       const item = document.createElement("div");
-      const lv = c.level || 1;
-      item.textContent = lv <= chefLevel()
-        ? c.food + " " + c.foodName + " — 🪙" + priceOf(c)
-        : "🔒 " + c.food + " " + c.foodName + " (" + chefRanks[lv - 1].name + ")";
+      item.textContent = c.food + " " + c.foodName + " — 🪙" + priceOf(c);
       list.appendChild(item);
     });
   }
@@ -1397,10 +997,9 @@
     currentSeat = null;
     resetDish();
     document.getElementById("order").textContent = isOpen
-      ? "No order yet! Go to the front 🏪 and take an order 🧾"
+      ? "Tap a customer to take their order! 👆"
       : "The restaurant is closed. Tap 🚪 CLOSED to open it! ☀️";
     document.getElementById("recipe").textContent = "";
-    showFrontOrder();
   }
 
   // Empty the bowl and get ready for a new dish
@@ -1411,8 +1010,6 @@
     mixes = 0;
     oops = 0;
     wrongGuesses = 0;
-    hintsLeft = 2;
-    showHintButton();
     toppingsAdded = [];
     extras = [];
     const bowl = document.getElementById("bowl");
@@ -1420,9 +1017,7 @@
     bowl.classList.remove("pop");
     document.getElementById("decorate").style.display = "none";
     document.getElementById("cook").style.display = "none";
-    document.getElementById("mixArea").style.display = "none";
-    stopCookSound();
-    setStation(null);
+    document.getElementById("mix").style.display = "none";
     document.querySelectorAll("#buttons button").forEach(b => b.disabled = false);
   }
 
@@ -1440,30 +1035,15 @@
     // Recipe already done? Then anything you drag in is an EXTRA (up to 3)!
     if (added.length === current.needs.length) {
       if (mixes > 0) return;
-      if (extras.length >= maxExtras()) {
+      if (extras.length >= 3) {
         document.getElementById("message").textContent = "The bowl is full! Time to mix! 🥄";
         return;
       }
-      if (emoji === current.noItem) {
-        document.getElementById("message").textContent = "Oh no! " + current.name + " said NO " + emoji + "! 🙈";
-        oops = oops + 1;
-        beep(200);
-        return;
-      }
-      if (!useStock(emoji)) return;
       extras.push(emoji);
       document.getElementById("bowl").textContent += emoji;
       document.getElementById("message").textContent = "Extra " + emoji + " added! 😋";
       petSay("Ooh, extra!");
       beep(900);
-      return;
-    }
-    // Picky customer said NO to this one!
-    if (emoji === current.noItem) {
-      document.getElementById("message").textContent = "Oh no! " + current.name + " said NO " + emoji + "! 🙈";
-      oops = oops + 1;
-      beep(200);
-      petSay("They said no!");
       return;
     }
     // Guessing game: is this one of the secret ingredients? (any order is OK)
@@ -1474,7 +1054,6 @@
       petSay("Not that one!");
       return;
     }
-    if (!useStock(emoji)) return;
     petSay(cheers[Math.floor(Math.random() * cheers.length)]);
     button.disabled = true;
     added.push(emoji);
@@ -1486,15 +1065,9 @@
     // Everything in? Add extras if you want, then mix!
     if (added.length === current.needs.length) {
       document.querySelectorAll("#buttons button").forEach(b => b.disabled = false);
-      showMixBar();
-      document.getElementById("mixArea").style.display = "block";
-      document.getElementById("message").textContent = "All in! Drag in extras if you like (up to " + maxExtras() + "), then Mix! 🥄";
+      document.getElementById("mix").style.display = "inline-block";
+      document.getElementById("message").textContent = "All in! Drag in extras if you like (up to 3), then Mix! 🥄";
     }
-  }
-
-  // The whole dish: the first part of a combo (if any), the food, and its toppings
-  function dishLook() {
-    return (current.firstDish || "") + foodLook() + toppingsAdded.join("");
   }
 
   // What the food looks like, with its extras (like 🍔🧀🧀)
@@ -1530,22 +1103,7 @@
     // Tips: 1 coin per star. VIPs give double!
     const earned = current.vip ? review * 2 : review;
     addCoins(earned);
-    gainXP(10);
-    if (current.critic) {
-      if (review === 5) {
-        awards = awards + 1;
-        addCoins(20);
-        extraNote = extraNote + " 🕵️ The critic gives you a GOLDEN AWARD 🏆✨! +20🪙";
-        confetti();
-      } else {
-        extraNote = extraNote + " 🕵️ The critic says: Good, but not perfect. Try again next time!";
-      }
-    }
     todayServed = todayServed + 1;
-    challengeStep("serve", 1);
-    challengeStep("food", 1, current.food);
-    if (review === 5) challengeStep("perfect", 1);
-    if (currentSeat.delivery) challengeStep("delivery", 1);
     document.getElementById("message").textContent =
       current.who + " review: " + "⭐".repeat(review) + " " + words[review] +
       (toppingsAdded.length > 0 ? " Love the toppings! " : " ") +
@@ -1560,15 +1118,14 @@
       deliveryOrder = null;
       phoneRingsLater(20000);
     } else {
-      rooms[seat.room].seats[seat.index].eating = dishLook();
+      rooms[seat.room].seats[seat.index].eating = foodLook() + toppingsAdded.join("");
     }
     current = null;
     currentSeat = null;
-    document.getElementById("order").textContent = "No order yet! Go to the front 🏪 and take an order 🧾";
+    document.getElementById("order").textContent = "Tap a customer to take their order! 👆";
     document.getElementById("recipe").textContent = "";
     document.querySelectorAll("#buttons button").forEach(b => b.disabled = false);
     showSeats();
-    showFrontOrder();
     if (!seat.delivery) {
       // After eating, the customer is ready to pay 💵
       const eater = rooms[seat.room].seats[seat.index];
@@ -1593,16 +1150,9 @@
 
   // Show the restaurant's star rating at the top
   function showRating() {
-    const next = level < 5 ? " (" + (level * 10 - totalStars) + ")" : "";
-    const parts = ["⭐".repeat(level) + "☆".repeat(5 - level) + next];
-    parts.push(chefRanks[chefLevel() - 1].icon + "Lv" + chefLevel());
-    if (isOpen && weather) parts.push(weather.icon + (specialDay ? specialDay.icon : ""));
-    if (isOpen && challenge) parts.push("🏆 " + challenge.text + (challenge.done ? " ✅" : " " + Math.min(challenge.count, challenge.goal) + "/" + challenge.goal));
-    if (trophies > 0 || awards > 0) parts.push((trophies > 0 ? "🏅" + trophies : "") + (awards > 0 ? "🎖️" + awards : ""));
-    if (myHelpers.length > 0 || robotDone()) {
-      parts.push("👥" + myHelpers.map(h => helpers.find(x => x.id === h).who).join("") + (robotDone() ? "🤖" : ""));
-    }
-    document.getElementById("stars").textContent = parts.join(" · ");
+    const next = level < 5 ? "  (next star: " + (level * 10 - totalStars) + " more ⭐)" : "";
+    document.getElementById("stars").textContent =
+      "Restaurant: " + "⭐".repeat(level) + "☆".repeat(5 - level) + next;
     document.getElementById("crown").textContent = level === 5 ? "👑 " : "";
   }
 
@@ -1646,7 +1196,7 @@
     b.onclick = () => {
       if (toppingsAdded.length >= 3) return;
       toppingsAdded.push(t);
-      document.getElementById("bowl").textContent = dishLook();
+      document.getElementById("bowl").textContent = foodLook() + toppingsAdded.join("");
       beep(700 + toppingsAdded.length * 100);
     };
     document.getElementById("toppings").appendChild(b);
@@ -1670,16 +1220,12 @@
       beep(250);
       return;
     }
-    if (current.combo) { comboNext(); return; }
     document.getElementById("decorate").style.display = "none";
     serving = true;
     document.getElementById("chef").textContent = "💁‍♀️";
-    document.getElementById("bowl").textContent = "🍽️" + dishLook();
+    document.getElementById("bowl").textContent = "🍽️" + foodLook() + toppingsAdded.join("");
     if (currentSeat.party) {
-      carryToFront("🍽️" + dishLook());
-      document.getElementById("message").textContent = deliveryOrder.lunch
-        ? "Drag the food from the tray into the lunchbox 🍱"
-        : "Drag the food from the tray to the party 🎉";
+      document.getElementById("message").textContent = "Drag the food onto the party tray 🎉";
       petSay("Yummy party food!");
     } else if (currentSeat.delivery) {
       // Deliveries get packed in a box first!
@@ -1691,23 +1237,10 @@
       document.getElementById("message").textContent = "It's a delivery! Drag the food into the box to pack it 📦";
       petSay("Pack it up!");
     } else {
-      carryToFront("🍽️" + dishLook());
       document.getElementById("message").textContent =
-        "You're the waiter now! Drag the food from the tray to " + current.name + "'s table 🍽️";
+        "You're the waiter now! Drag the food to " + current.name + "'s seat 🍽️";
       petSay("Bring it over!");
     }
-  }
-
-  // Put the food on the tray and walk out to the front 🏪
-  function carryToFront(what) {
-    document.getElementById("bowl").textContent = "";
-    const tray = document.getElementById("tray");
-    tray.textContent = what;
-    tray.style.display = "block";
-    goFront();
-  }
-  function hideTray() {
-    document.getElementById("tray").style.display = "none";
   }
 
   // ---- Packing for delivery 📦 ----
@@ -1719,56 +1252,49 @@
     box.textContent = "📦🎀";
     box.className = "packed pop";
     document.getElementById("bowl").textContent = "";
-    document.getElementById("box").style.display = "none";
-    carryToFront("📦🎀");
-    document.getElementById("message").textContent = "All packed! Now drag the box from the tray to the scooter 🛵";
+    document.getElementById("message").textContent = "All packed! Now drag the box to the scooter 🛵";
     petSay("So neat!");
     beep(800); setTimeout(() => beep(1000), 120);
   }
 
-  // Deliveries: drag the food from the bowl into the box to pack it
-  document.getElementById("bowl").onpointerdown = (e) => {
-    if (!serving || !currentSeat.delivery || currentSeat.party || packed) return;
-    dragThing(e, dishLook(), document.getElementById("box"), packIt);
+  // Carry the packed box to the scooter
+  document.getElementById("box").onpointerdown = (e) => {
+    if (!serving || !packed) return;
+    const dish = foodLook() + toppingsAdded.join("");
+    dragThing(e, "📦", document.getElementById("delivery"), () => {
+      if (!serving) return;
+      serving = false;
+      document.getElementById("chef").textContent = "👩‍🍳";
+      document.getElementById("box").style.display = "none";
+      driveScooter(dish);
+    });
   };
 
-  // At the front: drag the food on the tray to the table, the scooter, or the party
-  document.getElementById("tray").onpointerdown = (e) => {
+  // Grab the food from the bowl and carry it to the seat
+  document.getElementById("bowl").onpointerdown = (e) => {
     if (!serving) return;
-    const dish = dishLook();
-    function done() {
-      serving = false;
-      hideTray();
-      document.getElementById("chef").textContent = "👩‍🍳";
-    }
+    const dish = foodLook() + toppingsAdded.join("");
     if (currentSeat.party) {
       dragThing(e, dish, document.getElementById("delivery"), () => {
         if (!serving) return;
-        done();
+        serving = false;
+        document.getElementById("chef").textContent = "👩‍🍳";
         partyDish(dish);
       });
       return;
     }
     if (currentSeat.delivery) {
-      dragThing(e, "📦", document.getElementById("delivery"), () => {
-        if (!serving) return;
-        done();
-        driveScooter(dish);
-      });
-      return;
-    }
-    if (roomNow !== currentSeat.room) {
-      document.getElementById("message").textContent =
-        current.name + " is sitting in the " + rooms[currentSeat.room].name + "! Walk there 🚶‍♀️";
+      if (!packed) dragThing(e, dish, document.getElementById("box"), packIt);
       return;
     }
     const seat = document.querySelectorAll("#seats .seat")[currentSeat.index];
     dragThing(e, dish, seat, () => {
       if (!serving) return;
-      done();
+      serving = false;
+      document.getElementById("chef").textContent = "👩‍🍳";
       foodDone();
     });
-  };
+  }
 
   // ---- Kitchen pet 🐱 (tap it to change pets) ----
   const pets = ["🐱", "🐶", "🐹", "🐰", "🐥", "🐢"];
@@ -1795,7 +1321,6 @@
     if (id === "shop") showShop();
     if (id === "maker") showMaker();
     if (id === "menu") showMenu();
-    if (id === "garden") showGarden();
   }
   function closePanel(id) {
     document.getElementById(id).style.display = "none";
@@ -1816,10 +1341,6 @@
 
   function showShop() {
     document.getElementById("shopCoins").textContent = coins;
-    showMarket();
-    showUpgrades();
-    showHelpers();
-    showRobot();
     const list = document.getElementById("themeList");
     list.textContent = "";
     themes.forEach((t, i) => {
@@ -1982,576 +1503,11 @@
     document.getElementById("leds").appendChild(led);
   }
 
-  // ---- Ingredients run out! 🛒 Buy more at the market ----
-  const stock = {};
-  pantry.forEach(p => { stock[p] = 8; });
-
-  // Show the little number on each ingredient
-  function showStock() {
-    document.querySelectorAll("#buttons button").forEach(b => {
-      const n = stock[b.textContent] || 0;
-      b.dataset.stock = n;
-      b.classList.toggle("empty", n === 0);
-    });
-  }
-
-  // Use one ingredient. Returns false if there are none left.
-  function useStock(emoji) {
-    if ((stock[emoji] || 0) <= 0) {
-      document.getElementById("message").textContent = "Out of " + emoji + "! Buy more at the 🏪 Shop market 🛒";
-      petSay("We need more " + emoji + "!");
-      beep(250);
-      return false;
-    }
-    stock[emoji] = stock[emoji] - 1;
-    showStock();
-    return true;
-  }
-
-  // Pay for something in the shop (returns false if we don't have enough coins)
-  function spend(price) {
-    if (coins < price) {
-      document.getElementById("shopMsg").textContent = "You need " + (price - coins) + " more coins. Keep cooking! 🍳";
-      beep(250);
-      return false;
-    }
-    coins = coins - price;
-    document.getElementById("coins").textContent = coins;
-    beep(880);
-    return true;
-  }
-
-  function showMarket() {
-    const list = document.getElementById("marketList");
-    list.textContent = "";
-    pantry.forEach(p => {
-      const b = document.createElement("button");
-      b.textContent = p + stock[p];
-      b.title = "Buy 5 " + p + " for 🪙2";
-      b.onclick = () => {
-        if (!spend(2)) return;
-        stock[p] = stock[p] + 5;
-        document.getElementById("shopMsg").textContent = "Bought 5 " + p + "! 🛒";
-        showStock(); saveProgress(); showShop();
-      };
-      list.appendChild(b);
-    });
-    // One button to fill up everything that's running low
-    const low = pantry.filter(p => stock[p] < 5);
-    if (low.length > 0) {
-      const all = document.createElement("button");
-      const price = low.length;
-      all.textContent = "Fill up all low ones! 🪙" + price;
-      all.style.background = "#ffcf4d";
-      all.onclick = () => {
-        if (!spend(price)) return;
-        low.forEach(p => { stock[p] = stock[p] + 5; });
-        document.getElementById("shopMsg").textContent = "Your kitchen is full of food again! 🛒✨";
-        showStock(); saveProgress(); showShop();
-      };
-      list.appendChild(document.createElement("br"));
-      list.appendChild(all);
-    }
-  }
-
-  // ---- Kitchen upgrades 📈 ----
-  const upgrades = [
-    { id: "oven",  name: "⚡ Super Oven: a bigger green zone", price: 30 },
-    { id: "bowl",  name: "🥣 Big Bowl: up to 5 extras",        price: 20 },
-    { id: "spoon", name: "✨ Magic Spoon: mix in 1 tap",        price: 25 },
-  ];
-  const myUpgrades = [];
-  function has(id) { return myUpgrades.includes(id); }
-  function maxExtras() { return has("bowl") ? 5 : 3; }
-
-  function showUpgrades() {
-    const list = document.getElementById("upgradeList");
-    list.textContent = "";
-    upgrades.forEach(u => {
-      const b = document.createElement("button");
-      b.textContent = has(u.id) ? "✅ " + u.name : u.name + " — 🪙" + u.price;
-      b.onclick = () => {
-        if (has(u.id) || !spend(u.price)) return;
-        myUpgrades.push(u.id);
-        document.getElementById("shopMsg").textContent = "Yay! You got the " + u.name + "!";
-        saveProgress(); showShop();
-      };
-      list.appendChild(b);
-      list.appendChild(document.createElement("br"));
-    });
-  }
-
-  // ---- Helpers 👥 ----
-  const helpers = [
-    { id: "waiter", who: "🐧", name: "🐧 Waiter Penguin: takes money and clears tables", price: 40 },
-    { id: "chef",   who: "🐻", name: "🐻 Helper Chef Bear: cooks some orders for you",   price: 60 },
-  ];
-  const myHelpers = [];
-
-  function showHelpers() {
-    const list = document.getElementById("helperList");
-    list.textContent = "";
-    helpers.forEach(h => {
-      const b = document.createElement("button");
-      const hired = myHelpers.includes(h.id);
-      b.textContent = hired ? "✅ " + h.name : h.name + " — 🪙" + h.price;
-      b.onclick = () => {
-        if (hired || !spend(h.price)) return;
-        myHelpers.push(h.id);
-        document.getElementById("shopMsg").textContent = "Welcome to the team, " + h.who + "!";
-        saveProgress(); showShop(); showRating();
-      };
-      list.appendChild(b);
-      list.appendChild(document.createElement("br"));
-    });
-  }
-
-  // The waiter penguin works in ALL the rooms: takes money 💵, then clears tables 🧽
-  setInterval(() => {
-    if (!isOpen || !myHelpers.includes("waiter")) return;
-    for (let ri = 0; ri < rooms.length; ri++) {
-      for (let i = 0; i < 3; i++) {
-        const c = rooms[ri].seats[i];
-        if (c && c.paying) {
-          collectPay(ri, i);
-          document.getElementById("message").textContent = "🐧 Waiter Penguin took the money from " + c.name + "! 💵";
-          return;
-        }
-        if (c && c.dirty) {
-          clearTable(ri, i);
-          document.getElementById("message").textContent = "🐧 Waiter Penguin cleared a table in the " + rooms[ri].name + "! 🧽";
-          return;
-        }
-      }
-    }
-  }, 6000);
-
-  // The helper chef bear cooks an order every 30 seconds (in the room you're in first, then any room)
-  setInterval(() => {
-    if (!isOpen || !myHelpers.includes("chef")) return;
-    if (queue.length < 2) return;   // leave the first customer for you!
-    const order = [roomNow].concat(rooms.map((r, ri) => ri).filter(ri => ri !== roomNow));
-    for (const ri of order) {
-      for (let i = 0; i < 3; i++) {
-        if (rooms[ri].seats[i] !== null) continue;
-        const c = queue.pop();
-        rooms[ri].seats[i] = c;
-        showQueue();
-        c.eating = c.food;
-        addCoins(3);
-        todayServed = todayServed + 1;
-        served = served + 1;
-        challengeStep("serve", 1);
-        challengeStep("food", 1, c.food);
-        document.getElementById("message").textContent =
-          "🐻 Helper Chef Bear made " + c.food + " for " + c.name + " in the " + rooms[ri].name + "! +3🪙";
-        setTimeout(() => {
-          if (rooms[ri].seats[i] !== c) return;
-          c.eating = null;
-          c.paying = true;
-          redrawSeats();
-        }, 2500);
-        redrawSeats();
-        return;
-      }
-    }
-  }, 30000);
-
-  // ---- Daily challenges 🏆 ----
-  let challenge = null;
-  let trophies = 0;
-
-  function newChallenge() {
-    const food = customers[Math.floor(Math.random() * customers.length)];
-    const kinds = [
-      { kind: "serve",    goal: 5,  text: "Serve 5 customers" },
-      { kind: "perfect",  goal: 3,  text: "3 perfect reviews" },
-      { kind: "food",     goal: 2,  text: "Serve 2 " + food.food, food: food.food },
-      { kind: "coins",    goal: 40, text: "Earn 40 coins" },
-      { kind: "delivery", goal: 2,  text: "2 deliveries" },
-    ];
-    challenge = kinds[Math.floor(Math.random() * kinds.length)];
-    challenge.count = 0;
-    challenge.done = false;
-    showRating();
-  }
-
-  // Count progress on today's challenge
-  function challengeStep(kind, amount, food) {
-    if (!challenge || challenge.done || challenge.kind !== kind) return;
-    if (kind === "food" && food !== challenge.food) return;
-    challenge.count = challenge.count + amount;
-    if (challenge.count >= challenge.goal) {
-      challenge.done = true;
-      trophies = trophies + 1;
-      setTimeout(() => {
-        addCoins(15);
-        document.getElementById("message").textContent = "🏆 Challenge done: " + challenge.text + "! You won a trophy 🏅 and 🪙15!";
-        confetti();
-        petSay("A trophy!!");
-        beep(784); setTimeout(() => beep(988), 150); setTimeout(() => beep(1175), 300);
-        saveProgress();
-        showRating();
-      }, 1200);
-    }
-    showRating();
-  }
-
-  // ---- Weather 🌦️ (a new one every morning) ----
-  const weathers = [
-    { icon: "☀️", name: "Hot sunny day",  type: "hot" },     // lots of people want cold food!
-    { icon: "☔", name: "Rainy day",      type: "rain" },    // fewer customers outside
-    { icon: "⛅", name: "Cloudy day",     type: "cloudy" },
-  ];
-  let weather = null;
-  // Rooms that are outside (rain falls there!)
-  function outdoor(ri) { return ["patio", "beach", "fairy", "jungle"].includes(rooms[ri].look); }
-
-  // The order in words, like "a big pizza with NO 🍄, extra SPICY 🌶️, with EXTRA 🧀"
-  function orderWords(c) {
-    return c.foodName +
-      (c.noItem ? " with NO " + c.noItem : "") +
-      (c.spicy ? ", extra SPICY 🌶️" : "") +
-      (extraWanted ? ", with EXTRA " + extraWanted : "") +
-      (c.combo ? " AND " + c.combo.foodName + " " + c.combo.food : "");
-  }
-
-  // ---- Combo orders 🍔+🥤: cook the second food after the first ----
-  function comboNext() {
-    current.firstDish = foodLook() + toppingsAdded.join("");
-    const two = current.combo;
-    current.combo = null;
-    Object.assign(current, { food: two.food, foodName: two.foodName, needs: two.needs, cook: two.cook,
-                             mine: two.mine, noItem: null, spicy: false });
-    extraWanted = null;
-    resetDish();
-    document.getElementById("order").textContent =
-      current.name + " also wants " + orderWords(current) + " " + current.food + " (first part ready: " + current.firstDish + ")";
-    showRecipe();
-    document.getElementById("message").textContent = "Part 1 is ready! " + current.firstDish + " Now make the " + current.foodName + "! 🍳";
-    petSay("Part 2!");
-    beep(880);
-  }
-
-  // ---- Chef levels 🎓: cook to get experience and unlock new recipes ----
-  const chefRanks = [
-    { xp: 0,   name: "Little Chef", icon: "🥄" },
-    { xp: 100, name: "Junior Chef", icon: "🍳" },
-    { xp: 300, name: "Super Chef",  icon: "🌟" },
-    { xp: 600, name: "Master Chef", icon: "👑" },
-  ];
-  let xp = 0;
-  function chefLevel() {
-    let lv = 1;
-    chefRanks.forEach((r, i) => { if (xp >= r.xp) lv = i + 1; });
-    return lv;
-  }
-  function gainXP(n) {
-    const before = chefLevel();
-    xp = xp + n;
-    const now = chefLevel();
-    if (now > before) {
-      const rank = chefRanks[now - 1];
-      const unlocked = customers.filter(c => c.level === now).map(c => c.food + " " + c.foodName).join(", ");
-      setTimeout(() => {
-        document.getElementById("message").textContent =
-          "🎓 You are now a " + rank.icon + " " + rank.name + "! New recipes: " + unlocked + "!";
-        confetti();
-        petSay("Level up!");
-        beep(523); setTimeout(() => beep(784), 150); setTimeout(() => beep(1046), 300);
-      }, 2000);
-    }
-    showRating();
-  }
-
-  // ---- Food critic awards 🎖️ ----
-  let awards = 0;
-
-  // ---- Special days 📅 ----
-  let specialDay = null;
-  function pickSpecialDay() {
-    specialDay = null;
-    const roll = Math.random();
-    if (roll < 0.15) {
-      const foods = customers.filter(c => (c.level || 1) <= chefLevel());
-      const f = foods[Math.floor(Math.random() * foods.length)];
-      specialDay = { type: "food", icon: f.food, name: f.food + " Day", food: f.food, info: f.foodName + " pays double!" };
-    } else if (roll < 0.25) {
-      specialDay = { type: "costume", icon: "🎃", name: "Costume Party Day", info: "everyone comes in fun costumes!" };
-    } else if (roll < 0.35) {
-      specialDay = { type: "snow", icon: "⛄", name: "Snow Day", info: "warm food pays double!" };
-    }
-  }
-
-  // ---- Build a robot 🤖, piece by piece ----
-  const robotParts = [
-    { name: "Head 🤖",   price: 10 },
-    { name: "Body 🔋",   price: 10 },
-    { name: "Arms 🦾",   price: 15 },
-    { name: "Wheels ⚙️", price: 15 },
-  ];
-  let robotBuilt = 0;   // how many parts we have
-  function robotDone() { return robotBuilt >= robotParts.length; }
-
-  function showRobot() {
-    const list = document.getElementById("robotList");
-    list.textContent = "";
-    const info = document.createElement("div");
-    info.textContent = robotDone()
-      ? "🤖 Robo is ready! Robo mixes and chops for you in 1 tap!"
-      : "Robot parts: " + robotParts.slice(0, robotBuilt).map(r => r.name).join(" ") + " (" + robotBuilt + "/4)";
-    list.appendChild(info);
-    if (!robotDone()) {
-      const part = robotParts[robotBuilt];
-      const b = document.createElement("button");
-      b.textContent = "Add the " + part.name + " — 🪙" + part.price;
-      b.onclick = () => {
-        if (!spend(part.price)) return;
-        robotBuilt = robotBuilt + 1;
-        document.getElementById("shopMsg").textContent = robotDone()
-          ? "Beep boop! 🤖 Robo is alive and ready to help!"
-          : "Added the " + part.name + "! 🔧";
-        if (robotDone()) confetti();
-        saveProgress(); showShop(); showRating();
-      };
-      list.appendChild(b);
-    }
-  }
-
-  // ---- My garden 🌱: grow free ingredients ----
-  const plots = ["🍅", "🍓", "🥕", "🌽", "🥬", "🍎"].map(seed => ({ seed: seed, stage: 0, growUntil: 0 }));
-  const plantLooks = ["🟫", "🌱", "🌿", "🪴"];
-
-  function showGarden() {
-    const box = document.getElementById("plots");
-    box.textContent = "";
-    const now = Date.now();
-    plots.forEach((pl, i) => {
-      const b = document.createElement("button");
-      if (now < pl.growUntil) b.textContent = plantLooks[Math.min(pl.stage, 3)] + "⏳";
-      else if (pl.stage === 4) b.textContent = pl.seed + "✨";
-      else if (pl.stage === 0) b.textContent = "🟫" + pl.seed;
-      else b.textContent = plantLooks[pl.stage] + "💧";
-      b.onclick = () => tapPlot(i);
-      box.appendChild(b);
-    });
-  }
-
-  function tapPlot(i) {
-    const pl = plots[i];
-    const msg = document.getElementById("gardenMsg");
-    const now = Date.now();
-    if (now < pl.growUntil) {
-      msg.textContent = "It's growing... wait a little bit ⏳";
-    } else if (pl.stage === 0) {
-      pl.stage = 1;
-      msg.textContent = "You planted a " + pl.seed + " seed! Now water it 💧";
-      beep(500);
-    } else if (pl.stage === 4) {
-      stock[pl.seed] = stock[pl.seed] + 5;
-      pl.stage = 0;
-      msg.textContent = "You picked 5 fresh " + pl.seed + "! They're on your counter 🧺";
-      showStock();
-      saveProgress();
-      beep(880); setTimeout(() => beep(1100), 120);
-    } else {
-      pl.stage = pl.stage + 1;
-      pl.growUntil = now + 6000;   // takes 6 seconds to grow
-      msg.textContent = "Splash! 💧 It's growing!";
-      beep(700, 0.05);
-    }
-    showGarden();
-  }
-
-  // Keep the garden picture fresh while it's open
-  setInterval(() => {
-    if (document.getElementById("garden").style.display === "block") showGarden();
-  }, 1000);
-
-  // ---- The stove 🍳: shows what you're cooking with ----
-  const stations = {
-    bake:   { icon: "🔥", label: "Oven" },
-    fry:    { icon: "🍳", label: "Pan" },
-    boil:   { icon: "🫕", label: "Pot" },
-    freeze: { icon: "🧊", label: "Freezer" },
-    chop:   { icon: "🔪", label: "Board" },
-  };
-  function setStation(m) {
-    const st = m ? stations[m] : { icon: "🍳", label: "Stove" };
-    document.getElementById("stationIcon").textContent = st.icon;
-    document.getElementById("stationIcon").className = "";
-    document.getElementById("stationLabel").textContent = st.label;
-  }
-
-  // The mixing bar: how many stirs are done
-  function showMixBar() {
-    document.getElementById("mixFill").style.width = (mixes / 5 * 100) + "%";
-    document.getElementById("mixText").textContent = mixes + "/5";
-  }
-
-  // ---- Kitchen sounds 🔊 (made by the browser, no files) ----
-  // A short "shhh" noise: good for swishing, sizzling and chopping
-  function noise(seconds, freq, volume, type) {
-    try {
-      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-      if (ctx.state === "suspended") ctx.resume();
-      const len = Math.floor(ctx.sampleRate * seconds);
-      const buffer = ctx.createBuffer(1, len, ctx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
-      const src = ctx.createBufferSource();
-      src.buffer = buffer;
-      const filter = ctx.createBiquadFilter();
-      filter.type = type || "bandpass";
-      filter.frequency.value = freq;
-      const gain = ctx.createGain();
-      gain.gain.setValueAtTime(volume, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + seconds);
-      src.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-      src.start();
-    } catch (e) { /* no sound, that's okay */ }
-  }
-
-  // A "bloop" bubble for boiling
-  function bloop() {
-    try {
-      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const now = ctx.currentTime;
-      osc.frequency.setValueAtTime(140 + Math.random() * 80, now);
-      osc.frequency.exponentialRampToValueAtTime(420, now + 0.1);
-      gain.gain.setValueAtTime(0.06, now);
-      gain.gain.linearRampToValueAtTime(0, now + 0.12);
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(now); osc.stop(now + 0.13);
-    } catch (e) { /* no sound, that's okay */ }
-  }
-
-  // Cooking sounds that keep playing while the food cooks
-  let cookSoundTimer = null;
-  function startCookSound(m) {
-    stopCookSound();
-    const sounds = {
-      fry:    { every: 70,  play: () => noise(0.05, 3000 + Math.random() * 4000, 0.06, "highpass") },   // sizzle
-      boil:   { every: 180, play: () => { if (Math.random() < 0.7) bloop(); } },                          // bubble bubble
-      bake:   { every: 400, play: () => beep(80, 0.03, 0.45) },                                           // oven hum
-      freeze: { every: 500, play: () => noise(0.45, 5000, 0.03, "highpass") },                            // cold whoosh
-    };
-    const sound = sounds[m];
-    if (sound) cookSoundTimer = setInterval(sound.play, sound.every);
-  }
-  function stopCookSound() {
-    clearInterval(cookSoundTimer);
-    cookSoundTimer = null;
-  }
-
-  // ---- Two screens 🏪 / 🍳 ----
-  function goKitchen() {
-    document.getElementById("front").style.display = "none";
-    document.getElementById("kitchenScreen").style.display = "block";
-    beep(500, 0.04);
-  }
-  function goFront() {
-    document.getElementById("kitchenScreen").style.display = "none";
-    document.getElementById("front").style.display = "block";
-    showFrontOrder();
-    beep(500, 0.04);
-  }
-
-  // What's cooking right now (shown on the front screen)
-  function showFrontOrder() {
-    const el = document.getElementById("frontOrder");
-    if (!isOpen) el.textContent = "The restaurant is closed. Tap 🚪 CLOSED to open it! ☀️";
-    else if (serving) el.textContent = "🍽️ Drag the food from the tray to the right place!";
-    else if (current) el.textContent = "🧾 Cooking: " + current.food + " for " + current.name + ". Go to the kitchen! 🍳";
-    else el.textContent = queue.length ? "👆 Tap the first customer in line to take their order!" : "Waiting for customers... 🚪";
-  }
-
-  // ---- The line at the order counter 🧾 ----
-  let queue = [];
-
-  // Draw the customers waiting in line
-  function showQueue() {
-    const box = document.getElementById("queue");
-    box.textContent = "";
-    queue.forEach((c, i) => {
-      const w = document.createElement("span");
-      w.className = "waiting" + (i === 0 ? " first" : "") + (c.justArrived ? " walkIn" : "");
-      c.justArrived = false;
-      w.textContent = c.who;
-      if (c.vip || c.costume) {
-        const hat = document.createElement("span");
-        hat.className = "vipCrown";
-        hat.textContent = c.vip ? "👑" : c.costume;
-        w.appendChild(hat);
-      }
-      if (i === 0) {
-        const say = document.createElement("span");
-        say.className = "say";
-        say.textContent = "Hi! I'd like to order!";
-        w.appendChild(say);
-        w.onclick = takeOrder;
-      }
-      const bar = document.createElement("span");
-      bar.className = "bar";
-      w.appendChild(bar);
-      showPatience(bar, c);
-      box.appendChild(w);
-    });
-    showFrontOrder();
-  }
-
-  // A new customer walks up to the counter now and then
-  setInterval(() => {
-    if (!isOpen || queue.length >= 3) return;
-    const chance = weather && weather.type === "rain" ? 0.4 : 0.75;   // fewer customers on rainy days ☔
-    if (Math.random() > chance) return;
-    const c = newCustomer();
-    c.justArrived = true;
-    queue.push(c);
-    beep(1046, 0.04); setTimeout(() => beep(1318, 0.04), 120);   // ding-dong!
-    showQueue();
-  }, 5000);
-
-  // Tap the first customer in line: take their order, then they sit at a table in this room
-  function takeOrder() {
-    if (busy() || serving) {
-      document.getElementById("message").textContent = "Finish " + current.name + "'s dish first! 🍳";
-      return;
-    }
-    const seats = rooms[roomNow].seats;
-    const free = seats.indexOf(null);
-    if (free === -1) {
-      document.getElementById("message").textContent =
-        "No free tables in the " + rooms[roomNow].name + "! Clear a table 🧽 or walk to another room 🚶‍♀️";
-      beep(250);
-      return;
-    }
-    const c = queue.shift();
-    seats[free] = c;
-    current = c;
-    currentSeat = { room: roomNow, index: free };
-    extraWanted = c.extraWanted;
-    resetDish();
-    document.getElementById("order").textContent = (c.vip ? "👑 VIP! " : "") +
-      c.name + ' says: "Can I have ' + orderWords(c) + ', please?" ' + c.food;
-    showRecipe();
-    document.getElementById("message").textContent =
-      "Order taken! 🧾 " + c.name + " sits at a table. What goes in " + c.foodName + "? 🤔";
-    petSay("New order!");
-    beep(600);
-    showSeats();
-    showQueue();
-    goKitchen();
-  }
-
   // ---- Save your game 💾 on this computer, so it's still here next time ----
   function saveProgress() {
     try {
       localStorage.setItem("kikkiSave", JSON.stringify({
-        coins, totalStars, level, served, owned, themeNow, petIndex, dirtyDishes,
-        stock, myUpgrades, myHelpers, trophies, xp, awards, robotBuilt
+        coins, totalStars, level, served, owned, themeNow, petIndex, dirtyDishes
       }));
     } catch (e) { /* can't save, that's okay */ }
   }
@@ -2566,13 +1522,6 @@
       themeNow = save.themeNow;
       petIndex = save.petIndex;
       dirtyDishes = save.dirtyDishes || 0;
-      if (save.stock) pantry.forEach(p => { if (save.stock[p] !== undefined) stock[p] = save.stock[p]; });
-      (save.myUpgrades || []).forEach(u => myUpgrades.push(u));
-      (save.myHelpers || []).forEach(h => myHelpers.push(h));
-      trophies = save.trophies || 0;
-      xp = save.xp || 0;
-      awards = save.awards || 0;
-      robotBuilt = save.robotBuilt || 0;
       showSink();
       document.getElementById("coins").textContent = coins;
       document.body.style.background = themes[themeNow].bg;
@@ -2583,7 +1532,6 @@
 
   // Get the restaurant ready. It starts CLOSED: tap the sign to open it!
   loadProgress();
-  showStock();
   showRating();
   rooms.forEach(r => { r.seats = [null, null, null]; });
   clearOrder();

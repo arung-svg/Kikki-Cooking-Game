@@ -473,17 +473,6 @@
   </div>
 
 <script>
-  // Moving your game to the app: a one-time link ending in "#move=..." brings your saved game along.
-  // (It only copies game progress on this computer, then the link cleans itself up.)
-  try {
-    if (location.hash.indexOf("#move=") === 0) {
-      const moved = JSON.parse(decodeURIComponent(location.hash.slice(6)));
-      if (moved.save) localStorage.setItem("kikkiSave", JSON.stringify(moved.save));
-      if (moved.recipes) localStorage.setItem("kikkiRecipes", JSON.stringify(moved.recipes));
-      history.replaceState(null, "", location.pathname);
-    }
-  } catch (e) { /* nothing to move */ }
-
   // The customers! Each one wants a food with 5 ingredients, added IN ORDER.
   // cook: "hot" goes in the oven, "cold" goes in the freezer.
   const customers = [

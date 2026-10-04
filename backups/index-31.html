@@ -473,17 +473,6 @@
   </div>
 
 <script>
-  // Moving your game to the app: a one-time link ending in "#move=..." brings your saved game along.
-  // (It only copies game progress on this computer, then the link cleans itself up.)
-  try {
-    if (location.hash.indexOf("#move=") === 0) {
-      const moved = JSON.parse(decodeURIComponent(location.hash.slice(6)));
-      if (moved.save) localStorage.setItem("kikkiSave", JSON.stringify(moved.save));
-      if (moved.recipes) localStorage.setItem("kikkiRecipes", JSON.stringify(moved.recipes));
-      history.replaceState(null, "", location.pathname);
-    }
-  } catch (e) { /* nothing to move */ }
-
   // The customers! Each one wants a food with 5 ingredients, added IN ORDER.
   // cook: "hot" goes in the oven, "cold" goes in the freezer.
   const customers = [
@@ -597,15 +586,6 @@
   }
 
   // ---- Hint 💡: one missing ingredient on the counter glows and bounces ----
-  let hintsLeft = 2;   // 2 hints for each dish
-
-  // The hint button shows how many hints are left, like "💡 Hint (2)"
-  function showHintButton() {
-    const b = document.getElementById("hint");
-    b.textContent = "💡 Hint (" + hintsLeft + ")";
-    b.style.opacity = hintsLeft > 0 ? 1 : 0.4;
-  }
-
   function hint() {
     if (!current) {
       document.getElementById("message").textContent = "Tap a customer first! 👆";
@@ -613,14 +593,6 @@
     }
     const missing = current.needs.filter(n => !added.includes(n));
     if (missing.length === 0) return;
-    // Only 2 hints for each dish!
-    if (hintsLeft <= 0) {
-      document.getElementById("message").textContent = "No more hints for this dish! You can figure it out, chef! 💪";
-      beep(250);
-      return;
-    }
-    hintsLeft = hintsLeft - 1;
-    showHintButton();
     const pick = missing[Math.floor(Math.random() * missing.length)];
     const b = [...document.querySelectorAll("#buttons button")].find(x => x.textContent === pick);
     b.classList.remove("glow");
@@ -1411,8 +1383,6 @@
     mixes = 0;
     oops = 0;
     wrongGuesses = 0;
-    hintsLeft = 2;
-    showHintButton();
     toppingsAdded = [];
     extras = [];
     const bowl = document.getElementById("bowl");

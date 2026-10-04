@@ -291,31 +291,6 @@
   /* The garden plots 🌱 */
   #plots button { font-size: 2em; width: 84px; height: 84px; margin: 4px; border: none; border-radius: 18px;
                   background: #c9a27a; box-shadow: 0 4px 0 #8f6440; cursor: pointer; }
-  /* Two screens: the Front and the Kitchen */
-  #kitchenScreen { display: none; }
-  .screenBtn {
-    font-size: 1.1em; padding: 6px 18px; margin: 4px; border: none; border-radius: 18px; cursor: pointer;
-    background: #ff8fc7; color: white; font-family: inherit; box-shadow: 0 3px 0 #d65f9c;
-  }
-  /* The order counter where customers line up */
-  #orderCounter {
-    position: relative; display: flex; align-items: flex-end; gap: 8px; max-width: 600px; min-height: 110px;
-    margin: 6px auto 0; padding: 8px 10px 0; border-radius: 16px 16px 0 0;
-    background: linear-gradient(transparent 62%, #b9875a 62%, #b9875a 72%, #e9c294 72%);
-  }
-  #register { font-size: 2em; line-height: 1; background: #fff3a8; border-radius: 12px; padding: 4px 6px; margin-bottom: 14px; }
-  #register span { font-size: 0.3em; font-weight: bold; }
-  #queue { flex: 1; display: flex; align-items: flex-end; gap: 6px; }
-  .waiting { position: relative; font-size: 3em; line-height: 1.1; cursor: pointer; padding: 0 4px 10px; border-radius: 16px; }
-  .waiting.first { background: rgba(255, 255, 255, 0.6); box-shadow: 0 0 0 3px #ff8fc7; }
-  .waiting .say { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); white-space: nowrap;
-                  font-size: 0.25em; background: white; border-radius: 8px; padding: 1px 6px; color: #6a2c70; }
-  .waiting .bar { bottom: 2px; }
-  .walkIn { animation: walkIn 0.8s ease-out; }
-  @keyframes walkIn { from { transform: translateX(200px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-  #tray { display: none; font-size: 2.4em; padding: 2px 8px; margin-bottom: 14px; border-radius: 16px;
-          background: white; box-shadow: 0 0 0 3px #ffcf4d; cursor: grab; touch-action: none; white-space: nowrap; }
-  #frontOrder { font-size: 1em; min-height: 1.3em; margin: 4px 0; }
   /* Bouncy cupcake when it's done */
   .pop { animation: pop 0.6s ease; }
   @keyframes pop { 0% { transform: scale(0); } 70% { transform: scale(1.4); } 100% { transform: scale(1); } }
@@ -338,35 +313,18 @@
     <button onclick="openPanel('maker')" title="Make your own recipe">📝</button>
   </div>
   <div class="leds" id="leds"><span class="disco" style="left: 2px;">🪩</span><span class="disco" style="right: 2px;">🪩</span></div>
-  <!-- Messages: what to do next -->
-  <div id="message"></div>
-
-  <!-- ===== SCREEN 1: THE FRONT 🏪 — tables, the order counter, and the line of customers ===== -->
-  <div id="front">
   <div class="scene" id="scene"><span id="chef">👩‍🍳</span><span id="pet" onclick="nextPet()" title="Tap me to change pets!">🐱</span><span id="petTalk"></span>
     &nbsp; <span id="seats"></span><span id="delivery" class="seat" onclick="pickDelivery()"></span></div>
 
-    <!-- The order counter: customers line up here to order -->
-    <div id="orderCounter">
-      <div id="register">🧾<br><span>Order<br>here!</span></div>
-      <div id="queue"></div>
-      <!-- The food you carry out to the tables (drag it to the right table!) -->
-      <div id="tray" title="Drag me to the table!"></div>
-    </div>
-    <div id="frontOrder"></div>
-    <button class="screenBtn" onclick="goKitchen()">🍳 Go to the Kitchen</button>
-  </div>
-
   <!-- The delivery road: the scooter drives the food to the friend's house -->
   <div id="road"><div id="roadInfo"></div><div id="track"><span id="scooter">🛵</span><span id="house"></span></div></div>
-
-  <!-- ===== SCREEN 2: THE KITCHEN 🍳 — cook the order ===== -->
-  <div id="kitchenScreen">
-  <button class="screenBtn" onclick="goFront()">🏪 Back to the Front</button>
   <div class="bubble">
     <span id="order"></span><br>
     Found: <span id="recipe"></span> <button id="hint" onclick="hint()">💡 Hint</button>
   </div>
+
+  <!-- Messages: what to do next -->
+  <div id="message"></div>
 
   <!-- The kitchen 🍳: the bowl, the stove, and the work buttons, all on the counter -->
   <div id="counter">
@@ -401,7 +359,6 @@
     </div>
     <!-- Ingredient buttons get made by the script below -->
     <div class="buttons" id="buttons"></div>
-  </div>
   </div>
 
   <div id="dragging"></div>
@@ -473,17 +430,6 @@
   </div>
 
 <script>
-  // Moving your game to the app: a one-time link ending in "#move=..." brings your saved game along.
-  // (It only copies game progress on this computer, then the link cleans itself up.)
-  try {
-    if (location.hash.indexOf("#move=") === 0) {
-      const moved = JSON.parse(decodeURIComponent(location.hash.slice(6)));
-      if (moved.save) localStorage.setItem("kikkiSave", JSON.stringify(moved.save));
-      if (moved.recipes) localStorage.setItem("kikkiRecipes", JSON.stringify(moved.recipes));
-      history.replaceState(null, "", location.pathname);
-    }
-  } catch (e) { /* nothing to move */ }
-
   // The customers! Each one wants a food with 5 ingredients, added IN ORDER.
   // cook: "hot" goes in the oven, "cold" goes in the freezer.
   const customers = [
@@ -597,15 +543,6 @@
   }
 
   // ---- Hint 💡: one missing ingredient on the counter glows and bounces ----
-  let hintsLeft = 2;   // 2 hints for each dish
-
-  // The hint button shows how many hints are left, like "💡 Hint (2)"
-  function showHintButton() {
-    const b = document.getElementById("hint");
-    b.textContent = "💡 Hint (" + hintsLeft + ")";
-    b.style.opacity = hintsLeft > 0 ? 1 : 0.4;
-  }
-
   function hint() {
     if (!current) {
       document.getElementById("message").textContent = "Tap a customer first! 👆";
@@ -613,14 +550,6 @@
     }
     const missing = current.needs.filter(n => !added.includes(n));
     if (missing.length === 0) return;
-    // Only 2 hints for each dish!
-    if (hintsLeft <= 0) {
-      document.getElementById("message").textContent = "No more hints for this dish! You can figure it out, chef! 💪";
-      beep(250);
-      return;
-    }
-    hintsLeft = hintsLeft - 1;
-    showHintButton();
     const pick = missing[Math.floor(Math.random() * missing.length)];
     const b = [...document.querySelectorAll("#buttons button")].find(x => x.textContent === pick);
     b.classList.remove("glow");
@@ -814,7 +743,7 @@
       pick = Object.assign({}, nextUp);
       nextUp = null;
     } else {
-      const sitting = rooms.flatMap(r => r.seats).concat(queue).filter(c => c).map(c => c.name);
+      const sitting = rooms.flatMap(r => r.seats).filter(c => c).map(c => c.name);
       let tries = 0;
       // On a hot day ☀️, lots of customers want something cold!
       const wantCold = weather && weather.type === "hot" && Math.random() < 0.5;
@@ -936,9 +865,8 @@
   // Walk 🚶‍♀️ to the other room: walk out one side, come in the other side
   let walking = false;
   function walk() {
-    goFront();
-    if (walking) return;
-    if (busy() && !serving) {
+    if (walking || serving) return;
+    if (busy()) {
       document.getElementById("message").textContent = "Finish this dish first! 🍳";
       return;
     }
@@ -966,12 +894,12 @@
 
   // Go to another room
   function goToRoom(r) {
-    if (busy() && !serving) {
+    if (busy()) {
       document.getElementById("message").textContent = "Finish this dish first! 🍳";
       return;
     }
     roomNow = r;
-    if (currentSeat && !currentSeat.delivery && !serving && currentSeat.room !== r) clearOrder();
+    if (currentSeat && !currentSeat.delivery && currentSeat.room !== r) clearOrder();
     showSeats();
   }
 
@@ -994,7 +922,6 @@
     petSay("New order!");
     beep(600);
     showSeats();
-    goKitchen();
   }
 
   // ---- Delivery 📞🛵: friends call and order food to their house ----
@@ -1059,7 +986,6 @@
     petSay("A delivery!");
     beep(600);
     showSeats();
-    goKitchen();
   }
 
   // ---- Parties 🎉: cook 3 dishes, then go to the party and serve them! ----
@@ -1104,7 +1030,6 @@
     petSay("A party!");
     beep(600);
     showSeats();
-    goKitchen();
   }
 
   // A dish goes onto the party tray. After 3 dishes, it's party time!
@@ -1163,8 +1088,6 @@
   // Back to work after the party
   function leaveParty() {
     closePanel("partyScene");
-    hideTray();
-    goFront();
     deliveryOrder = null;
     clearOrder();
     showSeats();
@@ -1247,9 +1170,6 @@
       isOpen = false;
       clearOrder();
       rooms.forEach(r => { r.seats = [null, null, null]; });
-      queue = [];
-      showQueue();
-      goFront();
       deliveryOrder = null;
       clearTimeout(phoneTimer);
       specialDay = null;
@@ -1270,14 +1190,8 @@
         "Good morning! It's a " + weather.icon + " " + weather.name + "! " +
         (specialDay ? "And it's " + specialDay.icon + " " + specialDay.name + ": " + specialDay.info + " " : "") +
         "Today's challenge: 🏆 " + challenge.text;
-      // The first customer walks up to the counter
-      setTimeout(() => {
-        if (!isOpen || queue.length) return;
-        const c = newCustomer();
-        c.justArrived = true;
-        queue.push(c);
-        showQueue();
-      }, 1500);
+      // Customers walk in one by one
+      rooms.forEach((r, ri) => r.seats.forEach((c, i) => fillSeatLater(ri, i, 1000 + (ri * 3 + i) * 700)));
       phoneRingsLater(15000);
       beep(523); setTimeout(() => beep(659), 150); setTimeout(() => beep(784), 300);
     }
@@ -1286,6 +1200,20 @@
     sign.classList.toggle("open", isOpen);
     updateSky();
     showSeats();
+  }
+
+  // A new customer sits at an empty seat after a little while (only when open)
+  function fillSeatLater(ri, i, ms) {
+    setTimeout(() => {
+      if (!isOpen || rooms[ri].seats[i] !== null) return;
+      // Rainy day ☔: outdoor tables stay empty more often
+      if (weather && weather.type === "rain" && outdoor(ri) && Math.random() < 0.6) {
+        fillSeatLater(ri, i, 8000);
+        return;
+      }
+      rooms[ri].seats[i] = newCustomer();
+      redrawSeats();
+    }, ms);
   }
 
   // Ka-ching! Take the money at the cash register 💵
@@ -1309,6 +1237,7 @@
     document.getElementById("message").textContent = "Dishes in the sink! Tap 🧽 to wash them 🫧";
     beep(500);
     redrawSeats();
+    fillSeatLater(ri, i, 2500);
   }
 
   // Scrub, scrub, scrub! 3 scrubs washes one dish.
@@ -1352,22 +1281,9 @@
         someoneLeft = true;
         document.getElementById("message").textContent =
           c.who + " " + c.name + " got too hungry and went home. Try to be a bit faster! 🏃‍♀️";
+        fillSeatLater(ri, i, 3000);
       }
     }));
-    // Customers waiting in line get hungry too!
-    queue.forEach(c => { c.patience = c.patience - 100 / 120; });
-    const leaving = queue.filter(c => c.patience <= 0);
-    if (leaving.length) {
-      queue = queue.filter(c => c.patience > 0);
-      document.getElementById("message").textContent =
-        leaving[0].who + " " + leaving[0].name + " waited too long in line and went home. Take orders faster! 🏃‍♀️";
-      showQueue();
-    } else {
-      document.querySelectorAll("#queue .waiting").forEach((w, i) => {
-        const bar = w.querySelector(".bar");
-        if (bar && queue[i]) showPatience(bar, queue[i]);
-      });
-    }
     if (someoneLeft) { redrawSeats(); return; }
     // Just update the bars in the room we see (no redraw, so dragging still works)
     const seatEls = document.querySelectorAll("#seats .seat");
@@ -1397,10 +1313,9 @@
     currentSeat = null;
     resetDish();
     document.getElementById("order").textContent = isOpen
-      ? "No order yet! Go to the front 🏪 and take an order 🧾"
+      ? "Tap a customer to take their order! 👆"
       : "The restaurant is closed. Tap 🚪 CLOSED to open it! ☀️";
     document.getElementById("recipe").textContent = "";
-    showFrontOrder();
   }
 
   // Empty the bowl and get ready for a new dish
@@ -1411,8 +1326,6 @@
     mixes = 0;
     oops = 0;
     wrongGuesses = 0;
-    hintsLeft = 2;
-    showHintButton();
     toppingsAdded = [];
     extras = [];
     const bowl = document.getElementById("bowl");
@@ -1564,11 +1477,10 @@
     }
     current = null;
     currentSeat = null;
-    document.getElementById("order").textContent = "No order yet! Go to the front 🏪 and take an order 🧾";
+    document.getElementById("order").textContent = "Tap a customer to take their order! 👆";
     document.getElementById("recipe").textContent = "";
     document.querySelectorAll("#buttons button").forEach(b => b.disabled = false);
     showSeats();
-    showFrontOrder();
     if (!seat.delivery) {
       // After eating, the customer is ready to pay 💵
       const eater = rooms[seat.room].seats[seat.index];
@@ -1676,10 +1588,9 @@
     document.getElementById("chef").textContent = "💁‍♀️";
     document.getElementById("bowl").textContent = "🍽️" + dishLook();
     if (currentSeat.party) {
-      carryToFront("🍽️" + dishLook());
       document.getElementById("message").textContent = deliveryOrder.lunch
-        ? "Drag the food from the tray into the lunchbox 🍱"
-        : "Drag the food from the tray to the party 🎉";
+        ? "Drag the food into the lunchbox 🍱"
+        : "Drag the food onto the party tray 🎉";
       petSay("Yummy party food!");
     } else if (currentSeat.delivery) {
       // Deliveries get packed in a box first!
@@ -1691,23 +1602,10 @@
       document.getElementById("message").textContent = "It's a delivery! Drag the food into the box to pack it 📦";
       petSay("Pack it up!");
     } else {
-      carryToFront("🍽️" + dishLook());
       document.getElementById("message").textContent =
-        "You're the waiter now! Drag the food from the tray to " + current.name + "'s table 🍽️";
+        "You're the waiter now! Drag the food to " + current.name + "'s seat 🍽️";
       petSay("Bring it over!");
     }
-  }
-
-  // Put the food on the tray and walk out to the front 🏪
-  function carryToFront(what) {
-    document.getElementById("bowl").textContent = "";
-    const tray = document.getElementById("tray");
-    tray.textContent = what;
-    tray.style.display = "block";
-    goFront();
-  }
-  function hideTray() {
-    document.getElementById("tray").style.display = "none";
   }
 
   // ---- Packing for delivery 📦 ----
@@ -1719,56 +1617,49 @@
     box.textContent = "📦🎀";
     box.className = "packed pop";
     document.getElementById("bowl").textContent = "";
-    document.getElementById("box").style.display = "none";
-    carryToFront("📦🎀");
-    document.getElementById("message").textContent = "All packed! Now drag the box from the tray to the scooter 🛵";
+    document.getElementById("message").textContent = "All packed! Now drag the box to the scooter 🛵";
     petSay("So neat!");
     beep(800); setTimeout(() => beep(1000), 120);
   }
 
-  // Deliveries: drag the food from the bowl into the box to pack it
-  document.getElementById("bowl").onpointerdown = (e) => {
-    if (!serving || !currentSeat.delivery || currentSeat.party || packed) return;
-    dragThing(e, dishLook(), document.getElementById("box"), packIt);
+  // Carry the packed box to the scooter
+  document.getElementById("box").onpointerdown = (e) => {
+    if (!serving || !packed) return;
+    const dish = dishLook();
+    dragThing(e, "📦", document.getElementById("delivery"), () => {
+      if (!serving) return;
+      serving = false;
+      document.getElementById("chef").textContent = "👩‍🍳";
+      document.getElementById("box").style.display = "none";
+      driveScooter(dish);
+    });
   };
 
-  // At the front: drag the food on the tray to the table, the scooter, or the party
-  document.getElementById("tray").onpointerdown = (e) => {
+  // Grab the food from the bowl and carry it to the seat
+  document.getElementById("bowl").onpointerdown = (e) => {
     if (!serving) return;
     const dish = dishLook();
-    function done() {
-      serving = false;
-      hideTray();
-      document.getElementById("chef").textContent = "👩‍🍳";
-    }
     if (currentSeat.party) {
       dragThing(e, dish, document.getElementById("delivery"), () => {
         if (!serving) return;
-        done();
+        serving = false;
+        document.getElementById("chef").textContent = "👩‍🍳";
         partyDish(dish);
       });
       return;
     }
     if (currentSeat.delivery) {
-      dragThing(e, "📦", document.getElementById("delivery"), () => {
-        if (!serving) return;
-        done();
-        driveScooter(dish);
-      });
-      return;
-    }
-    if (roomNow !== currentSeat.room) {
-      document.getElementById("message").textContent =
-        current.name + " is sitting in the " + rooms[currentSeat.room].name + "! Walk there 🚶‍♀️";
+      if (!packed) dragThing(e, dish, document.getElementById("box"), packIt);
       return;
     }
     const seat = document.querySelectorAll("#seats .seat")[currentSeat.index];
     dragThing(e, dish, seat, () => {
       if (!serving) return;
-      done();
+      serving = false;
+      document.getElementById("chef").textContent = "👩‍🍳";
       foodDone();
     });
-  };
+  }
 
   // ---- Kitchen pet 🐱 (tap it to change pets) ----
   const pets = ["🐱", "🐶", "🐹", "🐰", "🐥", "🐢"];
@@ -2129,14 +2020,11 @@
   // The helper chef bear cooks an order every 30 seconds (in the room you're in first, then any room)
   setInterval(() => {
     if (!isOpen || !myHelpers.includes("chef")) return;
-    if (queue.length < 2) return;   // leave the first customer for you!
     const order = [roomNow].concat(rooms.map((r, ri) => ri).filter(ri => ri !== roomNow));
     for (const ri of order) {
       for (let i = 0; i < 3; i++) {
-        if (rooms[ri].seats[i] !== null) continue;
-        const c = queue.pop();
-        rooms[ri].seats[i] = c;
-        showQueue();
+        const c = rooms[ri].seats[i];
+        if (!c || c.dirty || c.eating || c.paying || c === current) continue;
         c.eating = c.food;
         addCoins(3);
         todayServed = todayServed + 1;
@@ -2444,106 +2332,6 @@
   function stopCookSound() {
     clearInterval(cookSoundTimer);
     cookSoundTimer = null;
-  }
-
-  // ---- Two screens 🏪 / 🍳 ----
-  function goKitchen() {
-    document.getElementById("front").style.display = "none";
-    document.getElementById("kitchenScreen").style.display = "block";
-    beep(500, 0.04);
-  }
-  function goFront() {
-    document.getElementById("kitchenScreen").style.display = "none";
-    document.getElementById("front").style.display = "block";
-    showFrontOrder();
-    beep(500, 0.04);
-  }
-
-  // What's cooking right now (shown on the front screen)
-  function showFrontOrder() {
-    const el = document.getElementById("frontOrder");
-    if (!isOpen) el.textContent = "The restaurant is closed. Tap 🚪 CLOSED to open it! ☀️";
-    else if (serving) el.textContent = "🍽️ Drag the food from the tray to the right place!";
-    else if (current) el.textContent = "🧾 Cooking: " + current.food + " for " + current.name + ". Go to the kitchen! 🍳";
-    else el.textContent = queue.length ? "👆 Tap the first customer in line to take their order!" : "Waiting for customers... 🚪";
-  }
-
-  // ---- The line at the order counter 🧾 ----
-  let queue = [];
-
-  // Draw the customers waiting in line
-  function showQueue() {
-    const box = document.getElementById("queue");
-    box.textContent = "";
-    queue.forEach((c, i) => {
-      const w = document.createElement("span");
-      w.className = "waiting" + (i === 0 ? " first" : "") + (c.justArrived ? " walkIn" : "");
-      c.justArrived = false;
-      w.textContent = c.who;
-      if (c.vip || c.costume) {
-        const hat = document.createElement("span");
-        hat.className = "vipCrown";
-        hat.textContent = c.vip ? "👑" : c.costume;
-        w.appendChild(hat);
-      }
-      if (i === 0) {
-        const say = document.createElement("span");
-        say.className = "say";
-        say.textContent = "Hi! I'd like to order!";
-        w.appendChild(say);
-        w.onclick = takeOrder;
-      }
-      const bar = document.createElement("span");
-      bar.className = "bar";
-      w.appendChild(bar);
-      showPatience(bar, c);
-      box.appendChild(w);
-    });
-    showFrontOrder();
-  }
-
-  // A new customer walks up to the counter now and then
-  setInterval(() => {
-    if (!isOpen || queue.length >= 3) return;
-    const chance = weather && weather.type === "rain" ? 0.4 : 0.75;   // fewer customers on rainy days ☔
-    if (Math.random() > chance) return;
-    const c = newCustomer();
-    c.justArrived = true;
-    queue.push(c);
-    beep(1046, 0.04); setTimeout(() => beep(1318, 0.04), 120);   // ding-dong!
-    showQueue();
-  }, 5000);
-
-  // Tap the first customer in line: take their order, then they sit at a table in this room
-  function takeOrder() {
-    if (busy() || serving) {
-      document.getElementById("message").textContent = "Finish " + current.name + "'s dish first! 🍳";
-      return;
-    }
-    const seats = rooms[roomNow].seats;
-    const free = seats.indexOf(null);
-    if (free === -1) {
-      document.getElementById("message").textContent =
-        "No free tables in the " + rooms[roomNow].name + "! Clear a table 🧽 or walk to another room 🚶‍♀️";
-      beep(250);
-      return;
-    }
-    const c = queue.shift();
-    seats[free] = c;
-    current = c;
-    currentSeat = { room: roomNow, index: free };
-    extraWanted = c.extraWanted;
-    resetDish();
-    document.getElementById("order").textContent = (c.vip ? "👑 VIP! " : "") +
-      c.name + ' says: "Can I have ' + orderWords(c) + ', please?" ' + c.food;
-    showRecipe();
-    document.getElementById("message").textContent =
-      "Order taken! 🧾 " + c.name + " sits at a table. What goes in " + c.foodName + "? 🤔";
-    petSay("New order!");
-    beep(600);
-    showSeats();
-    showQueue();
-    goKitchen();
   }
 
   // ---- Save your game 💾 on this computer, so it's still here next time ----
