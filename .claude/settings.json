@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "deny": [
+      "WebSearch",
+      "WebFetch",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(pip:*)",
+      "Bash(pip3:*)",
+      "Bash(winget:*)",
+      "Bash(choco:*)",
+      "Bash(rm:*)",
+      "Bash(git push:*)",
+      "PowerShell(Invoke-WebRequest:*)",
+      "PowerShell(Invoke-RestMethod:*)",
+      "PowerShell(Remove-Item:*)",
+      "PowerShell(Start-BitsTransfer:*)",
+      "Read(../**)",
+      "Edit(../**)",
+      "Write(../**)",
+      "Edit(.claude/**)",
+      "Write(.claude/**)",
+      "Edit(CLAUDE.md)",
+      "Write(CLAUDE.md)"
+    ]
+  }
+}

@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cooking Kikki</title>
+<style>
+  /* Colors and page look */
+  body {
+    margin: 0;
+    font-family: "Comic Sans MS", "Trebuchet MS", sans-serif;
+    background: linear-gradient(#ffe4f1, #fff6d6);
+    color: #6a2c70;
+    text-align: center;
+    min-height: 100vh;
+  }
+  /* The fancy gold restaurant sign */
+  h1 {
+    display: inline-block; margin: 8px 0 2px; padding: 4px 18px; font-size: 1.5em;
+    background: #fffdf3; color: #a0740b; border: 5px double #e0b000; border-radius: 18px;
+    text-shadow: 0 0 6px #ffe680;
+  }
+  .twinkle { display: inline-block; animation: twinkle 1.2s infinite alternate; }
+  @keyframes twinkle { from { opacity: 0.3; transform: scale(0.8); } to { opacity: 1; transform: scale(1.2); } }
+  .scene { font-size: 2.5em; margin: 0; }
+  .table { font-size: 0.6em; }
+  /* Confetti that falls when the restaurant gets a new star */
+  .confetti { position: fixed; top: -40px; font-size: 2em; pointer-events: none; animation: fall 2.5s linear forwards; }
+  @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+  .bubble {
+    display: inline-block;
+    background: white;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 1.15em;
+    box-shadow: 0 3px 0 #f3b6d3;
+  }
+  /* The mixing bowl: a blue bowl sitting on the counter */
+  .bowl {
+    font-size: 2.7em; min-height: 1.3em; width: 380px; max-width: 85%; margin: 2px auto 6px;
+    padding: 4px 10px 14px; background: linear-gradient(#bfe6ff, #6fb8ef);
+    border-top: 7px solid #eaf7ff; border-radius: 14px 14px 50% 50% / 14px 14px 100% 100%;
+    box-shadow: 0 7px 4px rgba(90, 50, 20, 0.35);
+  }
+  .bowl.hover { background: linear-gradient(#ffe0f0, #ff9fcf); }
+  .buttons { max-width: 640px; margin: 0 auto; }
+  .buttons button { touch-action: none; }
+  /* The ingredient that follows your finger while you drag it */
+  #dragging { position: fixed; font-size: 3em; pointer-events: none; display: none; transform: translate(-50%, -50%); z-index: 10; }
+  #mix {
+    font-size: 1.5em; padding: 10px 24px; border: none; border-radius: 20px;
+    background: #8fd3ff; color: white; cursor: pointer; display: none; margin: 6px;
+  }
+  /* The bowl wiggles when you mix */
+  .wiggle { animation: wiggle 0.3s ease; }
+  @keyframes wiggle { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+  .buttons button {
+    font-size: 1.8em;
+    margin: 3px;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 4px 0 #f3b6d3;
+    cursor: pointer;
+  }
+  .buttons button:disabled { opacity: 0.3; cursor: default; }
+  /* The kitchen counter top: ingredients sit on it, ready to drag */
+  #counter {
+    max-width: 600px; margin: 6px auto 0; padding: 8px 6px 14px; border-radius: 14px 14px 6px 6px;
+    background: repeating-linear-gradient(90deg, #e9c294 0 46px, #e2b885 46px 48px);
+    border-bottom: 12px solid #b9875a; box-shadow: 0 6px 0 #8f6440;
+  }
+  #buttons button {
+    background: none; box-shadow: none; padding: 0 4px; margin: 0 2px; font-size: 2.2em;
+    filter: drop-shadow(0 4px 2px rgba(90, 50, 20, 0.45)); cursor: grab;
+  }
+  #buttons button:hover:not(:disabled) { transform: translateY(-4px) scale(1.1); }
+  #stars { font-size: 1.2em; color: #a0740b; }
+  #message { font-size: 1.3em; min-height: 1.4em; margin: 6px; }
+  #again {
+    font-size: 1.3em; padding: 10px 20px; border: none; border-radius: 20px;
+    background: #ff8fc7; color: white; cursor: pointer; display: none;
+  }
+  /* The oven/freezer timer. The green part is "just right"! */
+  #cook { display: none; margin: 6px; }
+  #meter {
+    position: relative; width: 300px; height: 24px; margin: 6px auto; border-radius: 12px; overflow: hidden;
+    background: linear-gradient(to right, #eee 60%, #9be89b 60%, #9be89b 85%, #ffb3b3 85%);
+    border: 3px solid #f3b6d3;
+  }
+  #needle { position: absolute; top: 0; bottom: 0; left: 0; width: 6px; background: #6a2c70; }
+  #cook button {
+    font-size: 1.3em; padding: 8px 20px; border: none; border-radius: 20px;
+    background: #ffb36b; color: white; cursor: pointer;
+  }
+  /* Top bar: coins, music, shop, my recipe */
+  #topbar { margin: 2px 0; }
+  #topbar button {
+    font-size: 1em; border: none; border-radius: 12px; background: white; box-shadow: 0 2px 0 #f3b6d3;
+    cursor: pointer; padding: 2px 8px; margin: 0 2px; font-family: inherit; color: #6a2c70;
+  }
+  .bubble { color: #6a2c70; }
+  /* The kitchen pet and what it says */
+  #pet { font-size: 0.6em; cursor: pointer; }
+  #petTalk { font-size: 0.28em; vertical-align: top; color: #6a2c70; background: white; border-radius: 10px; padding: 0 6px; }
+  #petTalk:empty { display: none; }
+  /* Decorating the food */
+  #decorate { display: none; margin: 4px; }
+  #decorate .buttons { display: inline-block; }
+  #serve {
+    font-size: 1.3em; padding: 8px 20px; border: none; border-radius: 20px;
+    background: #ffcf4d; color: white; cursor: pointer; margin: 4px;
+  }
+  /* Pop-up windows (the color shop and the recipe maker) */
+  .panel {
+    display: none; position: fixed; left: 16px; right: 16px; top: 16px; max-width: 520px; margin: 0 auto;
+    max-height: calc(100vh - 60px); overflow: auto; background: white; color: #6a2c70;
+    border: 5px double #e0b000; border-radius: 24px; padding: 12px; z-index: 20;
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.35);
+  }
+  .panel h2 { margin: 4px; color: #a0740b; }
+  .panel button {
+    font-size: 1.05em; margin: 3px; padding: 6px 12px; border: none; border-radius: 14px;
+    background: #ffe0f0; cursor: pointer; font-family: inherit; color: #6a2c70;
+  }
+  .panel .pick button { font-size: 1.4em; padding: 2px 6px; background: #fff6fb; }
+  .panel .pick button.chosen { background: #ffcf4d; }
+  .panel input { font-size: 1.1em; padding: 4px 8px; border-radius: 10px; border: 2px solid #f3b6d3; font-family: inherit; }
+  .panel > div { margin: 8px 0; }
+  /* Night time! 🌙 */
+  body.night { background: linear-gradient(#1d1b4a, #3b2f6e) !important; color: #fff3c4; }
+  /* Bouncy cupcake when it's done */
+  .pop { animation: pop 0.6s ease; }
+  @keyframes pop { 0% { transform: scale(0); } 70% { transform: scale(1.4); } 100% { transform: scale(1); } }
+</style>
+</head>
+<body>
+  <h1><span id="crown"></span><span class="twinkle">✨</span> Cooking Kikki's Restaurant <span class="twinkle">✨</span></h1>
+
+  <!-- The restaurant's star rating, the chef, and the customer at a fancy table -->
+  <div id="stars"></div>
+  <div id="topbar">
+    <span id="sky">☀️</span> &nbsp; 🪙 <span id="coins">0</span>
+    <button id="musicBtn" onclick="toggleMusic()">🎵 Music</button>
+    <button onclick="openPanel('shop')">🎨 Shop</button>
+    <button onclick="openPanel('maker')">📝 My Recipe</button>
+  </div>
+  <div class="scene">👩‍🍳<span id="pet" onclick="nextPet()" title="Tap me to change pets!">🐱</span><span id="petTalk"></span>
+    &nbsp; <span class="table">🕯️🍽️</span> <span id="customer"></span></div>
+  <div class="bubble">
+    <span id="order"></span><br>
+    Recipe: <span id="recipe"></span>
+  </div>
+
+  <!-- The kitchen counter, with the mixing bowl on top -->
+  <div id="counter">
+    <!-- The mixing bowl: ingredients show up here -->
+    <div class="bowl" id="bowl"></div>
+    <!-- Ingredient buttons get made by the script below -->
+    <div class="buttons" id="buttons"></div>
+  </div>
+
+  <div id="dragging"></div>
+  <button id="mix" onclick="mix()">Mix! 🥄</button>
+
+  <!-- Cooking: start it, then take it out when the needle is in the green -->
+  <div id="cook">
+    <div id="meter"><div id="needle"></div></div>
+    <button id="cookStart" onclick="startCooking()"></button>
+    <button id="cookStop" onclick="takeOut()">Take it out! 🧤</button>
+  </div>
+  <!-- Decorating: tap up to 3 toppings, then serve! -->
+  <div id="decorate">
+    <div class="buttons" id="toppings"></div>
+    <button id="serve" onclick="serve()">Serve! 🛎️</button>
+  </div>
+
+  <div id="message"></div>
+  <button id="again" onclick="nextCustomer()">Next customer! 🚪</button>
+
+  <!-- The color shop: spend your tip coins on new kitchen colors -->
+  <div class="panel" id="shop">
+    <h2>🎨 Kitchen Colors</h2>
+    <div>You have 🪙 <span id="shopCoins">0</span> coins</div>
+    <div id="themeList"></div>
+    <div id="shopMsg"></div>
+    <button onclick="closePanel('shop')">Close ❌</button>
+  </div>
+
+  <!-- The recipe maker: invent your own food! -->
+  <div class="panel" id="maker">
+    <h2>📝 Make Your Own Food!</h2>
+    <div>1. Pick a food:<br><span class="pick" id="makerFoods"></span></div>
+    <div>2. Give it a silly name:<br><input id="makerName" maxlength="20" placeholder="Sparkle Muffins"></div>
+    <div>3. Tap 5 ingredients, in order:<br>
+      <span id="makerPicks" style="font-size: 1.6em;">❓❓❓❓❓</span>
+      <button onclick="makerPicks = []; showMaker()">Start over 🔄</button><br>
+      <span class="pick" id="makerPantry"></span></div>
+    <div>4. Oven or freezer?<br><span class="pick" id="makerCook"></span></div>
+    <div id="makerMsg"></div>
+    <button onclick="saveRecipe()">Save my recipe! 💾</button>
+    <button onclick="closePanel('maker')">Close ❌</button>
+    <div id="myRecipes"></div>
+  </div>
+
+<script>
+  // The customers! Each one wants a food with 5 ingredients, added IN ORDER.
+  // cook: "hot" goes in the oven, "cold" goes in the freezer.
+  const customers = [
+    { who: "🐻", name: "Bear",    food: "🎂", foodName: "a birthday cake", cook: "hot",  needs: ["🥚", "🧈", "🥛", "🍫", "🍓"] },
+    { who: "🐶", name: "Puppy",   food: "🍕", foodName: "a big pizza",     cook: "hot",  needs: ["🌾", "🍅", "🧀", "🍄", "🫑"] },
+    { who: "🐱", name: "Kitty",   food: "🍣", foodName: "fancy sushi",     cook: "cold", needs: ["🍚", "🐟", "🥒", "🥑", "🥕"] },
+    { who: "🦄", name: "Unicorn", food: "🍨", foodName: "a rainbow sundae", cook: "cold", needs: ["🥛", "🍓", "🍫", "🍌", "🍒"] },
+    { who: "🐰", name: "Bunny",   food: "🥗", foodName: "a super salad",   cook: "cold", needs: ["🥕", "🥬", "🍅", "🥒", "🌽"] },
+    { who: "🐼", name: "Panda",   food: "🍜", foodName: "noodle soup",     cook: "hot",  needs: ["🍜", "🥚", "🍄", "🥕", "🧅"] },
+    { who: "🦊", name: "Fox",     food: "🥞", foodName: "fluffy pancakes", cook: "hot",  needs: ["🌾", "🥚", "🥛", "🧈", "🍯"] },
+    { who: "🐸", name: "Froggy",  food: "🍔", foodName: "a yummy burger",  cook: "hot",  needs: ["🍞", "🥬", "🍅", "🧀", "🥒"] },
+    { who: "🐧", name: "Penguin", food: "🥤", foodName: "a berry smoothie", cook: "cold", needs: ["🍌", "🍓", "🫐", "🥛", "🍯"] },
+    { who: "🐨", name: "Koala",   food: "🍪", foodName: "choco cookies",   cook: "hot",  needs: ["🌾", "🧈", "🥚", "🍫", "🍯"] },
+    { who: "🐷", name: "Piggy",   food: "🌮", foodName: "a crunchy taco",  cook: "hot",  needs: ["🌽", "🧀", "🍅", "🥬", "🥑"] },
+    { who: "🐵", name: "Monkey",  food: "🥧", foodName: "an apple pie",    cook: "hot",  needs: ["🌾", "🧈", "🍎", "🍯", "🥚"] },
+  ];
+
+  // Every ingredient in the kitchen
+  const pantry = ["🥚", "🧈", "🥛", "🍫", "🍓", "🌾", "🍅", "🧀", "🍄", "🫑", "🍚", "🐟", "🥒",
+                  "🥑", "🥕", "🍌", "🍒", "🥬", "🌽", "🍜", "🧅", "🍯", "🍞", "🫐", "🍎"];
+
+  let current = null;   // the customer we are cooking for
+  let added = [];       // ingredients already in the bowl
+  let oops = 0;         // mistakes for this customer (each one takes away a review star)
+  let totalStars = 0;   // all the review stars we ever got
+  let level = 1;        // the restaurant's rating, from 1 to 5 stars
+  let mixes = 0;        // how many times we stirred the bowl
+
+  // Make one ingredient for each thing in the pantry. Drag it into the bowl!
+  pantry.forEach(emoji => {
+    const b = document.createElement("button");
+    b.textContent = emoji;
+    b.onpointerdown = (e) => startDrag(e, b, emoji);
+    document.getElementById("buttons").appendChild(b);
+  });
+
+  // Dragging: the ingredient follows your finger or mouse
+  function startDrag(e, button, emoji) {
+    if (button.disabled) return;
+    e.preventDefault();
+    const ghost = document.getElementById("dragging");
+    const bowl = document.getElementById("bowl");
+    ghost.textContent = emoji;
+    ghost.style.display = "block";
+    moveGhost(e);
+
+    function overBowl(ev) {
+      const r = bowl.getBoundingClientRect();
+      return ev.clientX > r.left && ev.clientX < r.right && ev.clientY > r.top && ev.clientY < r.bottom;
+    }
+    function moveGhost(ev) {
+      ghost.style.left = ev.clientX + "px";
+      ghost.style.top = ev.clientY + "px";
+      bowl.classList.toggle("hover", overBowl(ev));
+    }
+    function drop(ev) {
+      ghost.style.display = "none";
+      bowl.classList.remove("hover");
+      document.removeEventListener("pointermove", moveGhost);
+      document.removeEventListener("pointerup", drop);
+      if (overBowl(ev)) addIngredient(button, emoji);
+    }
+    document.addEventListener("pointermove", moveGhost);
+    document.addEventListener("pointerup", drop);
+  }
+
+  // Stir the bowl! 5 stirs and the food is ready.
+  function mix() {
+    mixes = mixes + 1;
+    // No more extras once we start mixing
+    document.querySelectorAll("#buttons button").forEach(b => b.disabled = true);
+    const bowl = document.getElementById("bowl");
+    bowl.classList.remove("wiggle");
+    void bowl.offsetWidth;          // restart the wiggle animation
+    bowl.classList.add("wiggle");
+    beep(300 + mixes * 80);
+    document.getElementById("message").textContent = "Mixing... " + "🌀".repeat(mixes);
+    if (mixes === 5) {
+      document.getElementById("mix").style.display = "none";
+      setTimeout(readyToCook, 400);
+    }
+  }
+
+  // ---- The recipe: always shown, in order ----
+  function showRecipe() {
+    document.getElementById("recipe").textContent = current.needs.join(" ➜ ");
+  }
+
+  // ---- Cooking: oven 🔥 or freezer ❄️ ----
+  let heat = 0;          // how far the needle has moved (0 to 100)
+  let cookTimer = null;
+
+  function readyToCook() {
+    const hot = current.cook === "hot";
+    document.getElementById("bowl").textContent = foodLook();
+    document.getElementById("cook").style.display = "block";
+    document.getElementById("cookStart").style.display = "inline-block";
+    document.getElementById("cookStart").textContent = hot ? "Put it in the oven 🔥" : "Put it in the freezer ❄️";
+    document.getElementById("cookStop").style.display = "none";
+    document.getElementById("needle").style.left = "0%";
+    document.getElementById("message").textContent = "Take it out when the needle is in the GREEN! 💚";
+  }
+
+  function startCooking() {
+    heat = 0;
+    document.getElementById("cookStart").style.display = "none";
+    document.getElementById("cookStop").style.display = "inline-block";
+    document.getElementById("bowl").textContent = current.cook === "hot" ? "🔥" + foodLook() + "🔥" : "❄️" + foodLook() + "❄️";
+    cookTimer = setInterval(() => {
+      heat = heat + 1.5;
+      document.getElementById("needle").style.left = Math.min(heat, 98) + "%";
+      if (heat >= 100) cookedTooLong();
+    }, 60);
+  }
+
+  function takeOut() {
+    if (heat < 60) {
+      document.getElementById("message").textContent = "Not ready yet! Wait for the green ⏳";
+      beep(250);
+    } else if (heat <= 85) {
+      clearInterval(cookTimer);
+      document.getElementById("cook").style.display = "none";
+      startDecorate();
+    } else {
+      cookedTooLong();
+    }
+  }
+
+  // Oops! Cooked too long. Mix again and try one more time.
+  function cookedTooLong() {
+    clearInterval(cookTimer);
+    oops = oops + 1;
+    const hot = current.cook === "hot";
+    document.getElementById("bowl").textContent = hot ? "💨⬛💨" : "🧊🧊🧊";
+    document.getElementById("message").textContent = hot
+      ? "Oops! It got burnt! 🔥 Let's cook it again!"
+      : "Oops! It froze like a rock! 🧊 Let's try again!";
+    beep(180);
+    setTimeout(readyToCook, 1500);
+  }
+
+  // A new customer walks in (a different one each time)
+  function nextCustomer() {
+    let pick;
+    if (nextUp) {
+      // A customer wants the recipe you just invented!
+      pick = nextUp;
+      nextUp = null;
+    } else {
+      do { pick = customers[Math.floor(Math.random() * customers.length)]; } while (pick === current);
+      // Sometimes a VIP comes! They order the same food but give DOUBLE stars.
+      if (Math.random() < 0.2) {
+        const vip = vips[Math.floor(Math.random() * vips.length)];
+        pick = Object.assign({}, pick, { who: vip.who, name: vip.name, vip: true });
+      }
+    }
+    current = pick;
+    added = [];
+    mixes = 0;
+    oops = 0;
+    toppingsAdded = [];
+    extras = [];
+    // Sometimes the customer asks for an extra, like extra cheese!
+    extraWanted = Math.random() < 0.4 ? current.needs[Math.floor(Math.random() * current.needs.length)] : null;
+
+    // Day and night: it changes every 3 customers
+    const night = Math.floor(served / 3) % 2 === 1;
+    document.body.classList.toggle("night", night);
+    document.getElementById("sky").textContent = night ? "🌙" : "☀️";
+
+    document.getElementById("decorate").style.display = "none";
+    document.getElementById("customer").textContent = current.who;
+    document.getElementById("order").textContent = (current.vip ? "👑 VIP! " : "") +
+      current.name + ' says: "Can I have ' + current.foodName +
+      (extraWanted ? " with EXTRA " + extraWanted : "") + ', please?" ' + current.food;
+    const bowl = document.getElementById("bowl");
+    bowl.textContent = "";
+    bowl.classList.remove("pop");
+    document.getElementById("cook").style.display = "none";
+    showRecipe();
+    document.getElementById("message").textContent = "Drag the ingredients into the bowl, in order! 👆";
+    document.getElementById("again").style.display = "none";
+    document.querySelectorAll("#buttons button").forEach(b => b.disabled = false);
+  }
+
+  // Put an ingredient in the bowl (only if it's the NEXT one in the recipe)
+  function addIngredient(button, emoji) {
+    // Recipe already done? Then anything you drag in is an EXTRA (up to 3)!
+    if (added.length === current.needs.length) {
+      if (mixes > 0) return;
+      if (extras.length >= 3) {
+        document.getElementById("message").textContent = "The bowl is full! Time to mix! 🥄";
+        return;
+      }
+      extras.push(emoji);
+      document.getElementById("bowl").textContent += emoji;
+      document.getElementById("message").textContent = "Extra " + emoji + " added! 😋";
+      petSay("Ooh, extra!");
+      beep(900);
+      return;
+    }
+    if (!current.needs.includes(emoji)) {
+      document.getElementById("message").textContent = "Oops! " + current.name + " doesn't need that 🙈";
+      oops = oops + 1;
+      beep(200);
+      petSay("Oh no! Try again!");
+      return;
+    }
+    if (emoji !== current.needs[added.length]) {
+      document.getElementById("message").textContent = "Almost! That one comes later. Wrong order 🔢";
+      oops = oops + 1;
+      beep(200);
+      petSay("Hmm, not that one yet!");
+      return;
+    }
+    petSay(cheers[Math.floor(Math.random() * cheers.length)]);
+    button.disabled = true;
+    added.push(emoji);
+    showRecipe();
+    document.getElementById("bowl").textContent += emoji;
+    document.getElementById("message").textContent = "Yes! Keep going! 😄";
+    beep(400 + added.length * 120);
+
+    // Everything in? Add extras if you want, then mix!
+    if (added.length === current.needs.length) {
+      document.querySelectorAll("#buttons button").forEach(b => b.disabled = false);
+      document.getElementById("mix").style.display = "inline-block";
+      document.getElementById("message").textContent = "All in! Drag in extras if you like (up to 3), then Mix! 🥄";
+    }
+  }
+
+  // What the food looks like, with its extras (like 🍔🧀🧀)
+  function foodLook() {
+    return current.food + extras.join("");
+  }
+
+  // Show the food and celebrate
+  function foodDone() {
+    const bowl = document.getElementById("bowl");
+    bowl.textContent = foodLook() + toppingsAdded.join("") + "✨";
+
+    // Did we add the extra the customer asked for? Bonus coins!
+    let extraNote = "";
+    let bonus = 0;
+    if (extraWanted && extras.includes(extraWanted)) {
+      bonus = 2;
+      extraNote = " You remembered the extra " + extraWanted + "! +2🪙";
+    } else if (extras.length > 0) {
+      extraNote = " Yum, extra " + extras.join("") + "!";
+    }
+    coins = coins + bonus;
+    bowl.classList.add("pop");
+
+    // The customer's review: 5 stars, minus 1 for each oops (always at least 1)
+    const review = Math.max(1, 5 - oops);
+    const words = ["", "Thank you, chef!", "Nice try!", "Pretty good!", "So yummy!", "Best food EVER!"];
+    // Tips: 1 coin per star. VIPs give double!
+    const earned = current.vip ? review * 2 : review;
+    coins = coins + earned;
+    document.getElementById("coins").textContent = coins;
+    document.getElementById("message").textContent =
+      current.who + " review: " + "⭐".repeat(review) + " " + words[review] +
+      (toppingsAdded.length > 0 ? " Love the toppings! " : " ") +
+      "+" + earned + "🪙" + (current.vip ? " (VIP double!)" : "") + extraNote;
+    document.getElementById("again").style.display = "inline-block";
+    beep(660); setTimeout(() => beep(880), 150); setTimeout(() => beep(1100), 300);
+    served = served + 1;
+
+    // Every 10 review stars, the restaurant gets 1 more star (up to 5)
+    totalStars = totalStars + earned;
+    const newLevel = Math.min(5, 1 + Math.floor(totalStars / 10));
+    if (newLevel > level) {
+      level = newLevel;
+      setTimeout(levelUp, 800);
+    }
+    showRating();
+  }
+
+  // Show the restaurant's star rating at the top
+  function showRating() {
+    const next = level < 5 ? "  (next star: " + (level * 10 - totalStars) + " more ⭐)" : "";
+    document.getElementById("stars").textContent =
+      "Restaurant: " + "⭐".repeat(level) + "☆".repeat(5 - level) + next;
+    document.getElementById("crown").textContent = level === 5 ? "👑 " : "";
+  }
+
+  // Hooray! The restaurant got a new star. Confetti time!
+  function levelUp() {
+    document.getElementById("message").textContent = level === 5
+      ? "🏆 WOW! You are a 5-STAR RESTAURANT! 👑"
+      : "🎉 Your restaurant is now " + level + " stars! 🎉";
+    petSay("Hooray!!");
+    for (let i = 0; i < 25; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.textContent = ["🎉", "🎊", "✨", "⭐", "💖"][i % 5];
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.animationDelay = Math.random() * 0.8 + "s";
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 3500);
+    }
+    beep(523); setTimeout(() => beep(659), 150); setTimeout(() => beep(784), 300); setTimeout(() => beep(1046), 450);
+  }
+
+  // ---- VIP guests 👑 ----
+  const vips = [
+    { who: "🦄👑", name: "Royal Unicorn" },
+    { who: "🐝👑", name: "Queen Bee" },
+    { who: "🐲👑", name: "Prince Dragon" },
+  ];
+  let served = 0;       // how many customers we served (for day and night)
+  let coins = 0;        // tip coins 🪙
+  let nextUp = null;    // a customer who will order your own recipe next
+
+  // ---- Decorating 🍒 ----
+  const toppings = ["✨", "🍒", "🌈", "🍬", "🌸", "🫧"];
+  let toppingsAdded = [];
+  let extras = [];         // extra ingredients, like extra cheese 🧀
+  let extraWanted = null;  // the extra the customer asked for (if any)
+
+  toppings.forEach(t => {
+    const b = document.createElement("button");
+    b.textContent = t;
+    b.onclick = () => {
+      if (toppingsAdded.length >= 3) return;
+      toppingsAdded.push(t);
+      document.getElementById("bowl").textContent = foodLook() + toppingsAdded.join("");
+      beep(700 + toppingsAdded.length * 100);
+    };
+    document.getElementById("toppings").appendChild(b);
+  });
+
+  function startDecorate() {
+    toppingsAdded = [];
+    document.getElementById("bowl").textContent = foodLook();
+    document.getElementById("decorate").style.display = "block";
+    document.getElementById("message").textContent = "Perfect! Decorate it (up to 3), then Serve! 🛎️";
+    petSay("Ooh, pretty!");
+  }
+
+  function serve() {
+    document.getElementById("decorate").style.display = "none";
+    foodDone();
+  }
+
+  // ---- Kitchen pet 🐱 (tap it to change pets) ----
+  const pets = ["🐱", "🐶", "🐹", "🐰", "🐥", "🐢"];
+  const cheers = ["Yay!", "Go chef go!", "Yummy!", "You can do it!", "Wow!", "So good!"];
+  let petIndex = 0;
+  let petTimer = null;
+
+  function nextPet() {
+    petIndex = (petIndex + 1) % pets.length;
+    document.getElementById("pet").textContent = pets[petIndex];
+    petSay("Hi chef!");
+  }
+
+  function petSay(text) {
+    document.getElementById("petTalk").textContent = text;
+    clearTimeout(petTimer);
+    petTimer = setTimeout(() => document.getElementById("petTalk").textContent = "", 1500);
+  }
+
+  // ---- Pop-up windows ----
+  function openPanel(id) {
+    document.getElementById(id).style.display = "block";
+    if (id === "shop") showShop();
+    if (id === "maker") showMaker();
+  }
+  function closePanel(id) {
+    document.getElementById(id).style.display = "none";
+  }
+
+  // ---- Color shop 🎨 (pretend coins only) ----
+  const themes = [
+    { name: "Pink Party 🌸",     price: 0,  bg: "linear-gradient(#ffe4f1, #fff6d6)" },
+    { name: "Mint Garden 🌿",    price: 10, bg: "linear-gradient(#d8f8e8, #f4fff0)" },
+    { name: "Lavender Dream 💜", price: 15, bg: "linear-gradient(#ece0ff, #fdf0ff)" },
+    { name: "Sunny Lemon 🍋",    price: 20, bg: "linear-gradient(#fff3a8, #fffbe6)" },
+    { name: "Ocean Blue 🌊",     price: 25, bg: "linear-gradient(#cdeeff, #eefaff)" },
+    { name: "Rainbow 🌈",        price: 40, bg: "linear-gradient(#ffd1d1, #ffe9b8, #fffbb8, #d4ffc4, #c9ecff, #e6d1ff)" },
+  ];
+  const owned = [0];    // which themes we have (Pink Party is free)
+  let themeNow = 0;
+
+  function showShop() {
+    document.getElementById("shopCoins").textContent = coins;
+    const list = document.getElementById("themeList");
+    list.textContent = "";
+    themes.forEach((t, i) => {
+      const b = document.createElement("button");
+      b.style.background = t.bg;
+      if (i === themeNow) b.textContent = "✅ " + t.name;
+      else if (owned.includes(i)) b.textContent = "Use " + t.name;
+      else b.textContent = t.name + " — 🪙 " + t.price;
+      b.onclick = () => pickTheme(i);
+      list.appendChild(b);
+      list.appendChild(document.createElement("br"));
+    });
+  }
+
+  function pickTheme(i) {
+    const msg = document.getElementById("shopMsg");
+    if (!owned.includes(i)) {
+      if (coins < themes[i].price) {
+        msg.textContent = "You need " + (themes[i].price - coins) + " more coins. Keep cooking! 🍳";
+        beep(250);
+        return;
+      }
+      coins = coins - themes[i].price;
+      document.getElementById("coins").textContent = coins;
+      owned.push(i);
+      msg.textContent = "Yay! You got " + themes[i].name + "!";
+    } else {
+      msg.textContent = "";
+    }
+    themeNow = i;
+    document.body.style.background = themes[i].bg;
+    beep(880);
+    showShop();
+  }
+
+  // ---- Recipe maker 📝 ----
+  const makerFoodChoices = ["🍰", "🍩", "🧇", "🥨", "🍡", "🍮", "🥟", "🌯", "🍲", "🍧"];
+  const makerAnimals = [
+    { who: "🐭", name: "Mousey" }, { who: "🦔", name: "Hedgy" }, { who: "🐙", name: "Octo" },
+    { who: "🐢", name: "Turtle" }, { who: "🦉", name: "Owly" }, { who: "🐹", name: "Hammy" },
+  ];
+  let makerFood = "🍰";
+  let makerPicks = [];
+  let makerCookType = "hot";
+
+  function showMaker() {
+    // Food choices
+    const foods = document.getElementById("makerFoods");
+    foods.textContent = "";
+    makerFoodChoices.forEach(f => {
+      const b = document.createElement("button");
+      b.textContent = f;
+      if (f === makerFood) b.className = "chosen";
+      b.onclick = () => { makerFood = f; showMaker(); };
+      foods.appendChild(b);
+    });
+    // Ingredients picked so far
+    document.getElementById("makerPicks").textContent =
+      makerPicks.join("") + "❓".repeat(5 - makerPicks.length);
+    // Ingredient choices
+    const pan = document.getElementById("makerPantry");
+    pan.textContent = "";
+    pantry.forEach(p => {
+      const b = document.createElement("button");
+      b.textContent = p;
+      if (makerPicks.includes(p)) b.className = "chosen";
+      b.onclick = () => {
+        if (makerPicks.length < 5 && !makerPicks.includes(p)) { makerPicks.push(p); showMaker(); }
+      };
+      pan.appendChild(b);
+    });
+    // Oven or freezer
+    const cook = document.getElementById("makerCook");
+    cook.textContent = "";
+    [["hot", "🔥 Oven"], ["cold", "❄️ Freezer"]].forEach(([type, label]) => {
+      const b = document.createElement("button");
+      b.textContent = label;
+      if (type === makerCookType) b.className = "chosen";
+      b.onclick = () => { makerCookType = type; showMaker(); };
+      cook.appendChild(b);
+    });
+    // Recipes you already made
+    const mine = customers.filter(c => c.mine);
+    document.getElementById("myRecipes").textContent = mine.length
+      ? "My recipes: " + mine.map(c => c.food + " " + c.foodName).join(", ")
+      : "";
+  }
+
+  function saveRecipe() {
+    const name = document.getElementById("makerName").value.trim();
+    const msg = document.getElementById("makerMsg");
+    if (name === "") { msg.textContent = "Give your food a name first! ✏️"; return; }
+    if (makerPicks.length < 5) { msg.textContent = "Pick 5 ingredients! 🥕"; return; }
+    const animal = makerAnimals[Math.floor(Math.random() * makerAnimals.length)];
+    const recipe = { who: animal.who, name: animal.name, food: makerFood, foodName: name,
+                     cook: makerCookType, needs: makerPicks.slice(), mine: true };
+    customers.push(recipe);
+    nextUp = recipe;
+    saveMyRecipes();
+    msg.textContent = "Saved! " + animal.who + " " + animal.name + " wants to try " + name + " next! 🎉";
+    makerPicks = [];
+    document.getElementById("makerName").value = "";
+    beep(660); setTimeout(() => beep(990), 150);
+    showMaker();
+  }
+
+  // Remember your recipes on this computer (if the browser lets us)
+  function saveMyRecipes() {
+    try { localStorage.setItem("kikkiRecipes", JSON.stringify(customers.filter(c => c.mine))); } catch (e) {}
+  }
+  try {
+    const saved = JSON.parse(localStorage.getItem("kikkiRecipes") || "[]");
+    saved.forEach(r => customers.push(r));
+  } catch (e) {}
+
+  // ---- Music 🎵: a slow, relaxing tune that loops ----
+  // Soft, gentle notes (0 means a little rest)
+  const tune = [392, 440, 523, 0, 440, 392, 330, 0, 294, 330, 392, 0, 330, 294, 262, 0];
+
+  // One soft note that fades in and out gently (no harsh beeps)
+  function softNote(freq) {
+    try {
+      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === "suspended") ctx.resume();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const now = ctx.currentTime;
+      osc.type = "sine";
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.05, now + 0.3);   // fade in
+      gain.gain.linearRampToValueAtTime(0, now + 1.6);      // fade out slowly
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 1.7);
+    } catch (e) { /* no sound, that's okay */ }
+  }
+  let musicTimer = null;
+  let noteIndex = 0;
+
+  function toggleMusic() {
+    if (musicTimer) {
+      clearInterval(musicTimer);
+      musicTimer = null;
+      document.getElementById("musicBtn").textContent = "🎵 Music";
+    } else {
+      musicTimer = setInterval(() => {
+        const note = tune[noteIndex % tune.length];
+        if (note > 0) softNote(note);
+        noteIndex = noteIndex + 1;
+      }, 700);
+      document.getElementById("musicBtn").textContent = "🔇 Stop";
+    }
+  }
+
+  // Open the restaurant!
+  showRating();
+  nextCustomer();
+
+  // A tiny happy sound made by the browser (no files needed)
+  let ctx = null;   // one shared speaker for all the sounds
+  function beep(freq, volume, length) {
+    try {
+      if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === "suspended") ctx.resume();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.value = freq;
+      gain.gain.value = volume || 0.1;
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + (length || 0.15));
+    } catch (e) { /* no sound, that's okay */ }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cooking Kikki</title>
+<style>
+  /* Colors and page look */
+  body {
+    margin: 0;
+    font-family: "Comic Sans MS", "Trebuchet MS", sans-serif;
+    background: linear-gradient(#ffe4f1, #fff6d6);
+    color: #6a2c70;
+    text-align: center;
+    min-height: 100vh;
+  }
+  h1 { margin: 8px 0 2px; font-size: 1.6em; }
+  .scene { font-size: 3em; margin: 4px 0; }
+  .bubble {
+    display: inline-block;
+    background: white;
+    border-radius: 20px;
+    padding: 10px 18px;
+    font-size: 1.3em;
+    box-shadow: 0 3px 0 #f3b6d3;
+  }
+  .bowl {
+    font-size: 2.6em; min-height: 1.4em; margin: 8px auto; padding: 6px;
+    max-width: 420px; border: 4px dashed #f3b6d3; border-radius: 40px; background: #fffafc;
+  }
+  .bowl.hover { background: #ffe0f0; border-color: #ff8fc7; }
+  .buttons { max-width: 640px; margin: 0 auto; }
+  .buttons button { touch-action: none; }
+  /* The ingredient that follows your finger while you drag it */
+  #dragging { position: fixed; font-size: 3em; pointer-events: none; display: none; transform: translate(-50%, -50%); z-index: 10; }
+  #mix {
+    font-size: 1.5em; padding: 10px 24px; border: none; border-radius: 20px;
+    background: #8fd3ff; color: white; cursor: pointer; display: none; margin: 6px;
+  }
+  /* The bowl wiggles when you mix */
+  .wiggle { animation: wiggle 0.3s ease; }
+  @keyframes wiggle { 25% { transform: rotate(-8deg); } 75% { transform: rotate(8deg); } }
+  .buttons button {
+    font-size: 1.8em;
+    margin: 3px;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 4px 0 #f3b6d3;
+    cursor: pointer;
+  }
+  .buttons button:disabled { opacity: 0.3; cursor: default; }
+  #stars { font-size: 1.3em; }
+  #message { font-size: 1.3em; min-height: 1.4em; margin: 6px; }
+  #again {
+    font-size: 1.3em; padding: 10px 20px; border: none; border-radius: 20px;
+    background: #ff8fc7; color: white; cursor: pointer; display: none;
+  }
+  #peek { font-size: 0.8em; border: none; border-radius: 12px; background: #ffe0f0; cursor: pointer; padding: 2px 10px; }
+  /* The oven/freezer timer. The green part is "just right"! */
+  #cook { display: none; margin: 6px; }
+  #meter {
+    position: relative; width: 300px; height: 24px; margin: 6px auto; border-radius: 12px; overflow: hidden;
+    background: linear-gradient(to right, #eee 60%, #9be89b 60%, #9be89b 85%, #ffb3b3 85%);
+    border: 3px solid #f3b6d3;
+  }
+  #needle { position: absolute; top: 0; bottom: 0; left: 0; width: 6px; background: #6a2c70; }
+  #cook button {
+    font-size: 1.3em; padding: 8px 20px; border: none; border-radius: 20px;
+    background: #ffb36b; color: white; cursor: pointer;
+  }
+  /* Bouncy cupcake when it's done */
+  .pop { animation: pop 0.6s ease; }
+  @keyframes pop { 0% { transform: scale(0); } 70% { transform: scale(1.4); } 100% { transform: scale(1); } }
+</style>
+</head>
+<body>
+  <h1>🍰 Cooking Kikki's Restaurant 🍰</h1>
+
+  <!-- The chef and the customer -->
+  <div id="stars">Happy customers: 0 ⭐</div>
+  <div class="scene">👩‍🍳 &nbsp; <span id="customer"></span></div>
+  <div class="bubble">
+    <span id="order"></span><br>
+    Recipe: <span id="recipe"></span> <button id="peek" onclick="peek()">👀 Peek</button>
+  </div>
+
+  <!-- The mixing bowl: ingredients show up here -->
+  <div class="bowl" id="bowl">🥣</div>
+
+  <!-- Ingredient buttons get made by the script below -->
+  <div class="buttons" id="buttons"></div>
+
+  <div id="dragging"></div>
+  <button id="mix" onclick="mix()">Mix! 🥄</button>
+
+  <!-- Cooking: start it, then take it out when the needle is in the green -->
+  <div id="cook">
+    <div id="meter"><div id="needle"></div></div>
+    <button id="cookStart" onclick="startCooking()"></button>
+    <button id="cookStop" onclick="takeOut()">Take it out! 🧤</button>
+  </div>
+  <div id="message"></div>
+  <button id="again" onclick="nextCustomer()">Next customer! 🚪</button>
+
+<script>
+  // The customers! Each one wants a food with 5 ingredients, added IN ORDER.
+  // cook: "hot" goes in the oven, "cold" goes in the freezer.
+  const customers = [
+    { who: "🐻", name: "Bear",    food: "🎂", foodName: "a birthday cake", cook: "hot",  needs: ["🥚", "🧈", "🥛", "🍫", "🍓"] },
+    { who: "🐶", name: "Puppy",   food: "🍕", foodName: "a big pizza",     cook: "hot",  needs: ["🌾", "🍅", "🧀", "🍄", "🫑"] },
+    { who: "🐱", name: "Kitty",   food: "🍣", foodName: "fancy sushi",     cook: "cold", needs: ["🍚", "🐟", "🥒", "🥑", "🥕"] },
+    { who: "🦄", name: "Unicorn", food: "🍨", foodName: "a rainbow sundae", cook: "cold", needs: ["🥛", "🍓", "🍫", "🍌", "🍒"] },
+    { who: "🐰", name: "Bunny",   food: "🥗", foodName: "a super salad",   cook: "cold", needs: ["🥕", "🥬", "🍅", "🥒", "🌽"] },
+    { who: "🐼", name: "Panda",   food: "🍜", foodName: "noodle soup",     cook: "hot",  needs: ["🍜", "🥚", "🍄", "🥕", "🧅"] },
+  ];
+
+  // Every ingredient in the kitchen
+  const pantry = ["🥚", "🧈", "🥛", "🍫", "🍓", "🌾", "🍅", "🧀", "🍄", "🫑", "🍚", "🐟", "🥒",
+                  "🥑", "🥕", "🍌", "🍒", "🥬", "🌽", "🍜", "🧅"];
+
+  let current = null;   // the customer we are cooking for
+  let added = [];       // ingredients already in the bowl
+  let happy = 0;        // how many happy customers
+  let mixes = 0;        // how many times we stirred the bowl
+
+  // Make one ingredient for each thing in the pantry. Drag it into the bowl!
+  pantry.forEach(emoji => {
+    const b = document.createElement("button");
+    b.textContent = emoji;
+    b.onpointerdown = (e) => startDrag(e, b, emoji);
+    document.getElementById("buttons").appendChild(b);
+  });
+
+  // Dragging: the ingredient follows your finger or mouse
+  function startDrag(e, button, emoji) {
+    if (button.disabled) return;
+    e.preventDefault();
+    const ghost = document.getElementById("dragging");
+    const bowl = document.getElementById("bowl");
+    ghost.textContent = emoji;
+    ghost.style.display = "block";
+    moveGhost(e);
+
+    function overBowl(ev) {
+      const r = bowl.getBoundingClientRect();
+      return ev.clientX > r.left && ev.clientX < r.right && ev.clientY > r.top && ev.clientY < r.bottom;
+    }
+    function moveGhost(ev) {
+      ghost.style.left = ev.clientX + "px";
+      ghost.style.top = ev.clientY + "px";
+      bowl.classList.toggle("hover", overBowl(ev));
+    }
+    function drop(ev) {
+      ghost.style.display = "none";
+      bowl.classList.remove("hover");
+      document.removeEventListener("pointermove", moveGhost);
+      document.removeEventListener("pointerup", drop);
+      if (overBowl(ev)) addIngredient(button, emoji);
+    }
+    document.addEventListener("pointermove", moveGhost);
+    document.addEventListener("pointerup", drop);
+  }
+
+  // Stir the bowl! 5 stirs and the food is ready.
+  function mix() {
+    mixes = mixes + 1;
+    const bowl = document.getElementById("bowl");
+    bowl.classList.remove("wiggle");
+    void bowl.offsetWidth;          // restart the wiggle animation
+    bowl.classList.add("wiggle");
+    beep(300 + mixes * 80);
+    document.getElementById("message").textContent = "Mixing... " + "🌀".repeat(mixes);
+    if (mixes === 5) {
+      document.getElementById("mix").style.display = "none";
+      setTimeout(readyToCook, 400);
+    }
+  }
+
+  // ---- Secret recipe: show it for a few seconds, then hide it! ----
+  let peeking = false;
+  let peekTimer = null;
+
+  function showRecipe() {
+    // Ingredients already in the bowl stay visible. The rest are secret ❓
+    document.getElementById("recipe").textContent = current.needs
+      .map((n, i) => (peeking || i < added.length) ? n : "❓")
+      .join(" ➜ ");
+  }
+
+  function peek(seconds) {
+    peeking = true;
+    showRecipe();
+    clearTimeout(peekTimer);
+    peekTimer = setTimeout(() => { peeking = false; showRecipe(); }, (seconds || 2) * 1000);
+  }
+
+  // ---- Cooking: oven 🔥 or freezer ❄️ ----
+  let heat = 0;          // how far the needle has moved (0 to 100)
+  let cookTimer = null;
+
+  function readyToCook() {
+    const hot = current.cook === "hot";
+    document.getElementById("bowl").textContent = "🥣" + current.food;
+    document.getElementById("cook").style.display = "block";
+    document.getElementById("cookStart").style.display = "inline-block";
+    document.getElementById("cookStart").textContent = hot ? "Put it in the oven 🔥" : "Put it in the freezer ❄️";
+    document.getElementById("cookStop").style.display = "none";
+    document.getElementById("needle").style.left = "0%";
+    document.getElementById("message").textContent = "Take it out when the needle is in the GREEN! 💚";
+  }
+
+  function startCooking() {
+    heat = 0;
+    document.getElementById("cookStart").style.display = "none";
+    document.getElementById("cookStop").style.display = "inline-block";
+    document.getElementById("bowl").textContent = current.cook === "hot" ? "🔥" + current.food + "🔥" : "❄️" + current.food + "❄️";
+    cookTimer = setInterval(() => {
+      heat = heat + 1.5;
+      document.getElementById("needle").style.left = Math.min(heat, 98) + "%";
+      if (heat >= 100) cookedTooLong();
+    }, 60);
+  }
+
+  function takeOut() {
+    if (heat < 60) {
+      document.getElementById("message").textContent = "Not ready yet! Wait for the green ⏳";
+      beep(250);
+    } else if (heat <= 85) {
+      clearInterval(cookTimer);
+      document.getElementById("cook").style.display = "none";
+      foodDone();
+    } else {
+      cookedTooLong();
+    }
+  }
+
+  // Oops! Cooked too long. Mix again and try one more time.
+  function cookedTooLong() {
+    clearInterval(cookTimer);
+    const hot = current.cook === "hot";
+    document.getElementById("bowl").textContent = hot ? "💨⬛💨" : "🧊🧊🧊";
+    document.getElementById("message").textContent = hot
+      ? "Oops! It got burnt! 🔥 Let's cook it again!"
+      : "Oops! It froze like a rock! 🧊 Let's try again!";
+    beep(180);
+    setTimeout(readyToCook, 1500);
+  }
+
+  // A new customer walks in (a different one each time)
+  function nextCustomer() {
+    let pick;
+    do { pick = customers[Math.floor(Math.random() * customers.length)]; } while (pick === current);
+    current = pick;
+    added = [];
+    mixes = 0;
+    document.getElementById("customer").textContent = current.who;
+    document.getElementById("order").textContent =
+      current.name + ' says: "Can I have ' + current.foodName + ', please?" ' + current.food;
+    const bowl = document.getElementById("bowl");
+    bowl.textContent = "🥣";
+    bowl.classList.remove("pop");
+    document.getElementById("cook").style.display = "none";
+    peek(5);   // show the secret recipe for 5 seconds
+    document.getElementById("message").textContent = "Remember the recipe! Then drag them in, in order! 👀";
+    document.getElementById("again").style.display = "none";
+    document.querySelectorAll("#buttons button").forEach(b => b.disabled = false);
+  }
+
+  // Put an ingredient in the bowl (only if it's the NEXT one in the recipe)
+  function addIngredient(button, emoji) {
+    if (!current.needs.includes(emoji)) {
+      document.getElementById("message").textContent = "Oops! " + current.name + " doesn't need that 🙈";
+      beep(200);
+      return;
+    }
+    if (emoji !== current.needs[added.length]) {
+      document.getElementById("message").textContent = "Almost! That one comes later. Wrong order 🔢";
+      beep(200);
+      return;
+    }
+    button.disabled = true;
+    added.push(emoji);
+    showRecipe();
+    document.getElementById("bowl").textContent += emoji;
+    document.getElementById("message").textContent = "Yes! Keep going! 😄";
+    beep(400 + added.length * 120);
+
+    // Everything in? Time to mix!
+    if (added.length === current.needs.length) {
+      document.querySelectorAll("#buttons button").forEach(b => b.disabled = true);
+      document.getElementById("mix").style.display = "inline-block";
+      document.getElementById("message").textContent = "All in! Now mix it 5 times! 🥄";
+    }
+  }
+
+  // Show the food and celebrate
+  function foodDone() {
+    const bowl = document.getElementById("bowl");
+    bowl.textContent = current.food + "✨";
+    bowl.classList.add("pop");
+    happy = happy + 1;
+    document.getElementById("stars").textContent = "Happy customers: " + happy + " ⭐";
+    document.getElementById("message").textContent = "Yum! " + current.name + " loves it! " + current.who + "💖";
+    document.getElementById("again").style.display = "inline-block";
+    beep(660); setTimeout(() => beep(880), 150); setTimeout(() => beep(1100), 300);
+  }
+
+  // Open the restaurant!
+  nextCustomer();
+
+  // A tiny happy sound made by the browser (no files needed)
+  function beep(freq) {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.value = freq;
+      gain.gain.value = 0.1;
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(); osc.stop(ctx.currentTime + 0.15);
+    } catch (e) { /* no sound, that's okay */ }
+  }
+</script>
+</body>
+</html>
